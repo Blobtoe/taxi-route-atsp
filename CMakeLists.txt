@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 2.8.2)
+
+if(${CMAKE_VERSION} VERSION_LESS 2.8.2)
+    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+
+project(tsp
+        DESCRIPTION "Asymmetric Travelling Salesman Problem"
+        LANGUAGES CXX)
+
+set(CMAKE_BUILD_TYPE Debug)
+
+set(HEADERS
+    ${CMAKE_SOURCE_DIR}/include/file_handler.hpp
+    ${CMAKE_SOURCE_DIR}/include/timer.hpp
+    ${CMAKE_SOURCE_DIR}/include/menu_handler.hpp)
+
+set(SOURCES
+    ${CMAKE_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_SOURCE_DIR}/src/menu_handler.cpp
+    ${CMAKE_SOURCE_DIR}/src/file_handler.cpp)
+
+add_executable(graphs ${SOURCES} ${HEADERS})

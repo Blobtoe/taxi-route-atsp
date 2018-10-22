@@ -1,10 +1,13 @@
-#include "../include/menu_handler.hpp"
+#include "../include/timer.hpp"
 #include <string>
+#include <iostream>
+
+void eksdi()
+{
+}
 
 int main()
 {
-    std::string subtitles [4]{ "one", "two", "three", "fourfivesix"};
-    Menu m{ Menu() };
-    m.run(subtitles, 4, "MY MENU");
-    return 0;
+	auto t{ Timer<void>(eksdi) };
+	t.run();
 }
