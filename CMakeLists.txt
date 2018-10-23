@@ -13,11 +13,12 @@ set(CMAKE_BUILD_TYPE Debug)
 set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/file_handler.hpp
     ${CMAKE_SOURCE_DIR}/include/timer.hpp
-    ${CMAKE_SOURCE_DIR}/include/menu_handler.hpp)
+    ${CMAKE_SOURCE_DIR}/include/menu_handler.hpp
+    ${CMAKE_SOURCE_DIR}/include/adjacency_matrix.hpp)
 
 set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/main.cpp
     ${CMAKE_SOURCE_DIR}/src/menu_handler.cpp
-    ${CMAKE_SOURCE_DIR}/src/file_handler.cpp)
+    ${CMAKE_SOURCE_DIR}/src/adjacency_matrix.cpp)
 
-add_executable(graphs ${SOURCES} ${HEADERS})
+add_executable(tsp ${SOURCES} ${HEADERS})

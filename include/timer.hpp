@@ -17,15 +17,12 @@ public:
     ~Timer() = default;
     Timer& operator=(const Timer& rhs) = default;
 
-	T get_ret_copy();
-
     double run(Args ... args);
     double run_average(const int executions);
 
 private:
 
     T (*fnc_to_measure_)(Args ... args);
-	T ret_copy_;
 
     void start_counter();
     double get_time();
@@ -42,16 +39,10 @@ private:
 };
 
 template<typename T, typename ... Args>
-T Timer<T, Args ...>::get_ret_copy()
-{
-	return ret_copy_;
-}
-
-template<typename T, typename ... Args>
 double Timer<T, Args ... >::run(Args ... args)
 {
 	start_counter();
-	ret_copy_ = fnc_to_measure_(args ...);
+	fnc_to_measure_(args ...);
 	return get_time();
 }
 
