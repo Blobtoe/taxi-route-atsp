@@ -41,7 +41,7 @@ std::string Adjacency_Matrix::to_string() const
 	for(auto& rows: a_matrix_)
 	{
 		for(auto& cols: rows)
-			output += std::to_string(cols) + ", ";
+			output += std::to_string(cols) + " ";
 		output += "\n";
 	}
 	return output;
@@ -69,10 +69,10 @@ std::vector<int> Adjacency_Matrix::parse_file_input(std::string& line)
 	auto output{ std::vector<int>() };
 	for(auto& city: line)
 	{
-		if(line.compare(" "))
+		if(city == (' '))
 			continue;
 		try{
-			output.push_back(std::stoi(line));
+			output.push_back(city - '0');
 		}
 		catch(const std::invalid_argument){ throw; }
 	}

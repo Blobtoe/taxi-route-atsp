@@ -13,7 +13,7 @@ public:
 	Menu(bool (*file_fnc)(std::fstream&));	// add a structure reference
 	~Menu() = default;
 	
-	void run(const std::string subtitles[], size_t size, const std::string title);
+	void draw(const std::string subtitles[], size_t size, const std::string title);
 
 private:
 

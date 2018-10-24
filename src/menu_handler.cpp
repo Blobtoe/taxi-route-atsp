@@ -7,7 +7,7 @@ Menu::Menu(bool (*file_fnc)(std::fstream&))
 	: file_fnc_{ file_fnc }
 {}
 
-void Menu::run(const std::string subtitles[], size_t size, const std::string title)
+void Menu::draw(const std::string subtitles[], size_t size, const std::string title)
 {
 	draw_menu(subtitles, size, title);
 }

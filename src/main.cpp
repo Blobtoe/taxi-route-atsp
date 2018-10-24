@@ -1,13 +1,10 @@
 #include "../include/adjacency_matrix.hpp"
-#include <string>
+#include "../include/menu_handler.hpp"
 #include <iostream>
-
-void eksdi()
-{
-}
+#include <string>
+#include <climits>
+#include <algorithm>
 
 int main()
 {
-	Adjacency_Matrix a_m("../data/example.txt");
-	std::cout << a_m.to_string();
 }
