@@ -1,6 +1,9 @@
 #include "../include/adjacency_matrix.hpp"
 #include "../include/file_handler.hpp"
 
+Adjacency_Matrix::Adjacency_Matrix()
+{}
+
 Adjacency_Matrix::Adjacency_Matrix(std::vector<std::vector<int>> matrix)
     : a_matrix_{ matrix }
 {}
@@ -67,14 +70,18 @@ bool Adjacency_Matrix::load_from_file(std::fstream& in_file, Adjacency_Matrix& m
 std::vector<int> Adjacency_Matrix::parse_file_input(std::string& line)
 {
 	auto output{ std::vector<int>() };
-	for(auto& city: line)
+	int value{ 0 }, position{ 0 };
+	std::string number;
+
+	for (int i{0}; i < line.size();)
 	{
-		if(city == (' '))
-			continue;
-		try{
-			output.push_back(city - '0');
-		}
-		catch(const std::invalid_argument){ throw; }
+		position = line.find(" ", i);
+		if (position == std::string::npos)
+			position = line.size() - 1;
+		number = line.substr(i, position);
+		value = std::stoi(number);
+		output.push_back(value);
+		i = position + 1;
 	}
 	return output;
 }

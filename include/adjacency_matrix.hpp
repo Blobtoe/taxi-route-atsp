@@ -8,7 +8,7 @@
 class Adjacency_Matrix{
 
 public:
-    Adjacency_Matrix() = delete;
+    Adjacency_Matrix();
     Adjacency_Matrix(std::vector<std::vector<int>> input);
     Adjacency_Matrix(const std::string& filename);
 

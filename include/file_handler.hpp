@@ -43,7 +43,7 @@ bool File_Handler<T>::run(T& t)
 		error_ = "The file could not be opened.";
 		return false;
 	}
-    catch (const std::invalid_argument& e)
+    catch (const std::invalid_argument&)
     {
         error_ = "The file contents couldn't be parsed.";
         return false;
