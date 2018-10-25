@@ -1,3 +1,5 @@
+#pragma once
+
 #include "adjacency_matrix.hpp"
 #include "path.hpp"
 
@@ -16,10 +18,9 @@ namespace tsp{
         static Adjacency_Matrix mat_;
 
         static void init_perms(std::vector<int>& perms);
-        static void get_permutations(std::vector<int>& permutations, int begin, int end, Path& p);
-        static void if_better_path(std::vector<int>& perms, Path& p);
-        static int brute_force::get_cost(std::vector<int>& perms);
-
-
+        static void bf(std::vector<int>& permutations, int begin, int end, Path& p);
+        static void update_if_better(std::vector<int>& perms, Path& p);
+        static int get_cost(std::vector<int>& perms);
+		static void add_last_path(Path& p);
     };
 }

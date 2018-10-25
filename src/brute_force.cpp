@@ -1,4 +1,4 @@
-#include "../include/brute_force.hpp"
+﻿#include "../include/brute_force.hpp"
 #include <climits>
 
 namespace tsp{
@@ -10,35 +10,38 @@ namespace tsp{
         brute_force::mat_ = matrix;
 
         Path p{ Path(std::vector<int>(), INT_MAX) };
-        std::vector<int> perms{ std::vector<int>(matrix.size()) };
+        std::vector<int> perms{ std::vector<int>(matrix.size() + 1) };
         init_perms(perms);
 
-        get_permutations(perms, 1, matrix.size() - 1, p);
+        bf(perms, 1, matrix.size() - 1, p);
         return p;
     }
 
     void brute_force::init_perms(std::vector<int>& perms)
     {
-        for(int i{0}; i < perms.size(); ++i)
+        for(int i{0}; i < perms.size() - 1; ++i)
             perms[i] = i;
+		perms[perms.size() - 1] = 0;
     }
 
-    void brute_force::get_permutations(std::vector<int>& perms, int begin, int end, Path& p)
+	// Permutuje indeksy w wektorze.
+	// Po uzyskaniu jednej pełnej permutacji sprawdza, czy ta ścieżka jest lepsza od aktualnej.
+    void brute_force::bf(std::vector<int>& perms, int begin, int end, Path& p)
     {
-        if (begin == end)
-            if_better_path(perms, p);
+		if (begin == end)
+			update_if_better(perms, p);
         else
         { 
             for (int i{ begin }; i <= end; ++i) 
             { 
                 std::swap(perms[begin], perms[i]); 
-                get_permutations(perms, begin + 1, end, p); 
+                bf(perms, begin + 1, end, p); 
                 std::swap(perms[begin], perms[i]);
             } 
         }
     }
 
-    void brute_force::if_better_path(std::vector<int>& perms, Path& p)
+    void brute_force::update_if_better(std::vector<int>& perms, Path& p)
     {
         int updated_cost{ get_cost(perms) };
         if(updated_cost < p.cost_)
@@ -48,13 +51,19 @@ namespace tsp{
         }
     }
 
+	// Zwraca koszt przejścia przez miasta o indeksach zawartych w "perms".
     int brute_force::get_cost(std::vector<int>& perms)
     {
         int acc_cost{0};
+		int partial_cost{ 0 };
 
-        for(int i{0}; i + 1 < perms.size(); ++i)
-            acc_cost += mat_[perms[i]][perms[i + 1]];
-
+		for (int i{ 0 }; i + 1 < perms.size(); ++i)
+		{
+			partial_cost = mat_[perms[i]][perms[i + 1]];
+			if (partial_cost == 0)
+				return INT_MAX;
+			acc_cost += partial_cost;
+		}
         return acc_cost;
     }
 }

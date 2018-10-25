@@ -1,5 +1,6 @@
-#include "../include/adjacency_matrix.hpp"
+﻿#include "../include/adjacency_matrix.hpp"
 #include "../include/file_handler.hpp"
+#include <iostream>
 
 Adjacency_Matrix::Adjacency_Matrix()
 {}
@@ -67,19 +68,21 @@ bool Adjacency_Matrix::load_from_file(std::fstream& in_file, Adjacency_Matrix& m
 	return true;
 }
 
+// Dostając jedną linię z pliku, konwertuje każdą z wag i dodaje do macierzy.
 std::vector<int> Adjacency_Matrix::parse_file_input(std::string& line)
 {
 	auto output{ std::vector<int>() };
 	int value{ 0 }, position{ 0 };
 	std::string number;
 
-	for (int i{0}; i < line.size();)
+	for (int i{ 0 }; i < line.size();)
 	{
 		position = line.find(" ", i);
+
 		if (position == std::string::npos)
 			position = line.size() - 1;
-		number = line.substr(i, position);
-		value = std::stoi(number);
+
+		value = std::stoi(line.substr(i, position));
 		output.push_back(value);
 		i = position + 1;
 	}

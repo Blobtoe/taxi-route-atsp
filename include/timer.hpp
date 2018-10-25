@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef __linux__
 #include <time.h>
 #elif _WIN32
