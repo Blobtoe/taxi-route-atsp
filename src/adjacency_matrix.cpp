@@ -12,8 +12,8 @@ Adjacency_Matrix::Adjacency_Matrix(std::vector<std::vector<int>> matrix)
 Adjacency_Matrix::Adjacency_Matrix(const std::string& filename)
 	: a_matrix_{ std::vector<std::vector<int>>() }
 {
-	File_Handler<Adjacency_Matrix> f(filename, load_from_file);
-	if(!f.run(*this))
+	File_Handler f(filename, *this);
+	if(!f.run())
 		throw std::invalid_argument("File couldn't be loaded");
 }
  
@@ -51,14 +51,14 @@ std::string Adjacency_Matrix::to_string() const
 	return output;
 }
 
-bool Adjacency_Matrix::load_from_file(std::fstream& in_file, Adjacency_Matrix& matrix)
+bool Adjacency_Matrix::load_from_file(std::fstream& in_file)
 {
     std::string line;
     try
     {
 		std::getline(in_file, line); // Skip the number of cities
         while(std::getline(in_file, line))
-			matrix.a_matrix_.push_back( matrix.parse_file_input(line) );
+			a_matrix_.push_back( parse_file_input(line) );
     }
     catch(std::ifstream::failure& )
     {

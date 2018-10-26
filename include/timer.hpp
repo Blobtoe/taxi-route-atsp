@@ -6,6 +6,9 @@
 #include <Windows.h>
 #endif
 
+#include <iostream>
+#include <functional>
+
 template<typename T, typename ... Args>
 class Timer{
 
@@ -22,16 +25,19 @@ public:
     double run(Args ... args);
     double run_average(const int executions);
 
+	T get_output();
+
 private:
 
     T (*fnc_to_measure_)(Args ... args);
+	std::optional<T> alg_value;
 
     void start_counter();
     double get_time();
 
 	// Attributes for OS specific timing functions.
     #ifdef __linux__
-    struct timespec start_time_;
+    clock_t start_time_;
 
     #elif _WIN32
     double pc_freq_ = 0.0;
@@ -44,7 +50,7 @@ template<typename T, typename ... Args>
 double Timer<T, Args ... >::run(Args ... args)
 {
 	start_counter();
-	fnc_to_measure_(args ...);
+	alg_value = fnc_to_measure_(args ...);
 	return get_time();
 }
 
@@ -64,16 +70,13 @@ double Timer<T, Args ...>::run_average(const int executions)
 template<typename T, typename ... Args>
 void Timer<T, Args ...>::start_counter()
 {
-	clock_gettime(CLOCK_REALTIME, &start_time_);
+	start_time_ = clock();
 }
 
 template<typename T, typename ... Args>
 double Timer<T, Args ...>::get_time()
 {
-	struct timespec end_time_;
-	clock_gettime(CLOCK_REALTIME, &end_time_);
-	return ((end_time_.tv_sec - start_time_.tv_sec) +
-		(end_time_.tv_nsec - start_time_.tv_nsec)) / 1000000000L;
+	return (clock() - start_time_) / (double) CLOCKS_PER_SEC;
 }
 
 #elif _WIN32
@@ -97,3 +100,12 @@ double Timer<T, Args ...>::get_time()
 	return double(per_f.QuadPart - start_time_) / pc_freq_;
 }
 #endif
+
+template<typename T, typename ... Args>
+T Timer<T, Args ...>::get_output()
+{
+	if(alg_value.has_value())
+		return alg_value.value();
+	else
+		throw std::invalid_argument("Timed function does not return a value.");
+}

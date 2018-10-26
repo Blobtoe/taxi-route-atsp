@@ -7,6 +7,7 @@
 
 class Adjacency_Matrix{
 
+friend class File_Handler;
 public:
     Adjacency_Matrix();
     Adjacency_Matrix(std::vector<std::vector<int>> input);
@@ -22,6 +23,6 @@ public:
 private:
     std::vector<std::vector<int>> a_matrix_;
 
-    static bool load_from_file(std::fstream& file, Adjacency_Matrix& matrix);
+    bool load_from_file(std::fstream& file);
     std::vector<int> parse_file_input(std::string& line);
 };

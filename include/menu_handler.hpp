@@ -1,4 +1,7 @@
 #pragma once
+
+#include "adjacency_matrix.hpp"
+
 #include <fstream>
 #include <string>
 #include <vector>
@@ -10,16 +13,14 @@ public:
 	Menu() = default;
 	Menu& operator=(const Menu& rhs) = delete;
 
-	Menu(bool (*file_fnc)(std::fstream&));	// add a structure reference
 	~Menu() = default;
 	
-	void draw(const std::string subtitles[], size_t size, const std::string title);
+	void run(const std::string subtitles[], size_t size, const std::string title);
 
 private:
 
-	bool (*file_fnc_)(std::fstream&);
-	// structure reference here
-
+	Adjacency_Matrix matrix;
+	bool data_loaded = false;
 	// Kazda linia w srodku menu posiada 7 dodatkowych znakow,
 	// aby wszystkie wygladaly w ponizszy sposob:
 	// | 1) ... |
@@ -31,4 +32,7 @@ private:
 	std::string add_extra_chars(const std::string& line, const unsigned line_no, const unsigned max_len) const;
 	void clear_term() const;
 	int longest_subtitle(const std::string subtitles[], size_t size) const;
+	
+	void handle_input(const std::string subtitles[], size_t size, std::string title);
+	void load_from_file(std::string& filename);
 };

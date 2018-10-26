@@ -6,7 +6,7 @@ endif()
 
 project(tsp
         DESCRIPTION "Asymmetric Travelling Salesman Problem"
-        LANGUAGES CXX)
+        LANGUAGES CXX)     
 
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -20,9 +20,13 @@ set(HEADERS
 
 set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_SOURCE_DIR}/src/file_handler.cpp
     ${CMAKE_SOURCE_DIR}/src/menu_handler.cpp
     ${CMAKE_SOURCE_DIR}/src/adjacency_matrix.cpp
     "${CMAKE_SOURCE_DIR}/src/path.cpp"
     ${CMAKE_SOURCE_DIR}/src/brute_force.cpp)
 
 add_executable(tsp ${SOURCES} ${HEADERS})
+
+set_target_properties(tsp PROPERTIES
+        CXX_STANDARD 17)  

@@ -12,13 +12,11 @@
 
 int main()
 {
-
-    Adjacency_Matrix m{ Adjacency_Matrix("../data/test.txt") };
-    std::cout << tsp::brute_force::run(m).to_string();
-	
-	auto t{ Timer<Path, Adjacency_Matrix&>(tsp::brute_force::run) };
-	std::cout << "\n\n Time: " << t.run(m);
 	//Menu m{ Menu() };
-
-	system("pause");
+	//std::string subtitles[] = {"Wczytaj dane z pliku.", "Wyswietl aktualne dane.", "Uruchom algorytmy."};
+	//m.run(subtitles, 3, "Menu");
+	Adjacency_Matrix a = Adjacency_Matrix("/home/desktop/Desktop/github/tsp/data/test.txt");
+	auto t{ Timer<Path, Adjacency_Matrix&>(tsp::brute_force::run)};
+	std::cout << t.run(a) << std::endl;
+	std::cout << t.get_output().to_string();
 }

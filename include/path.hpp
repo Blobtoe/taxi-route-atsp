@@ -11,4 +11,5 @@ public:
     int cost_;
 
     std::string to_string();
+    void pretty_string(std::string& path);
 };

@@ -3,13 +3,9 @@
 #include <string>
 #include <iostream>
 
-Menu::Menu(bool (*file_fnc)(std::fstream&))
-	: file_fnc_{ file_fnc }
-{}
-
-void Menu::draw(const std::string subtitles[], size_t size, const std::string title)
+void Menu::run(const std::string subtitles[], size_t size, const std::string title)
 {
-	draw_menu(subtitles, size, title);
+	handle_input(subtitles, size, title);
 }
 
 void Menu::draw_menu(const std::string subtitles[], size_t size, const std::string title) const
@@ -21,6 +17,7 @@ void Menu::draw_menu(const std::string subtitles[], size_t size, const std::stri
 	draw_title(title, line_len + 7);
 	draw_body(subtitles, size, line_len);
 	std::cout << std::string(line_len + extra_chars, '-') << std::endl;
+	std::cout << "\n Twoj wybor >> ";
 }
 
 void Menu::clear_term() const
@@ -45,7 +42,7 @@ int Menu::longest_subtitle(const std::string subtitles[], size_t size) const
 
 void Menu::draw_title(const std::string& title, const unsigned line_len) const
 {
-	unsigned int dash_count{ line_len - (unsigned)title.size() - 2 };
+	unsigned dash_count{ line_len - (unsigned)title.size() - 2 };
 	auto dashes{ std::string((int) dash_count/2, '-') };
 	auto title_string{ std::string( dashes + " " + title + " " + dashes) };
 
@@ -69,3 +66,52 @@ std::string Menu::add_extra_chars(const std::string& line, const unsigned line_n
 		+ line + std::string(max_len - line.size(), ' ') + " |\n");
 }
 
+void Menu::handle_input(const std::string subtitles[], size_t size, std::string title)
+{
+	int choice = 4;
+	while(true)
+	{
+		draw_menu(subtitles, size, title);
+		std::cin >> choice;
+		switch(choice)
+		{
+			case 1:
+			{
+				std::string filename;
+				std::cout << " Podaj nazwe pliku >> ";
+				std::cin >> filename;
+				load_from_file(filename);
+				break;
+			}
+			case 2:
+			{
+				clear_term();
+				if(data_loaded)
+					std::cout << matrix.to_string();
+				break;
+			}
+			case 3:	// Algorytmy
+			{
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
+}
+
+void Menu::load_from_file(std::string& filename)
+{
+	try{
+		matrix = Adjacency_Matrix(filename);
+	}
+	catch(const std::invalid_argument&)
+	{
+		std::cout << "\n Podano nieprawidlowy plik.";
+		getchar();	// get rid of the trailing newline
+		getchar();
+		clear_term();
+	}
+}
