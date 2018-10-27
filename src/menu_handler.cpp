@@ -88,6 +88,8 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 				clear_term();
 				if(data_loaded)
 					std::cout << matrix.to_string();
+				getchar();
+				getchar();
 				break;
 			}
 			case 3:	// Algorytmy
@@ -106,6 +108,7 @@ void Menu::load_from_file(std::string& filename)
 {
 	try{
 		matrix = Adjacency_Matrix(filename);
+		data_loaded = true;
 	}
 	catch(const std::invalid_argument&)
 	{

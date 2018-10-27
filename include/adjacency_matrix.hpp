@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <string>
 #include <fstream>
+#include <math.h>
 
 class Adjacency_Matrix{
 
@@ -25,4 +26,8 @@ private:
 
     bool load_from_file(std::fstream& file);
     std::vector<int> parse_file_input(std::string& line);
+
+    void pretty_string(std::string& str_matrix) const;
+    // Returns the amount of spaces needed to justify the matrix.
+    int get_spaces(const int number) const;
 };

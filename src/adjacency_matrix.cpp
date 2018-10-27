@@ -44,10 +44,13 @@ std::string Adjacency_Matrix::to_string() const
 	auto output{ std::string() };
 	for(auto& rows: a_matrix_)
 	{
+		output += "| ";
 		for(auto& cols: rows)
-			output += std::to_string(cols) + " ";
-		output += "\n";
+			output += std::string(2 - get_spaces(cols),' ') 
+					+ std::to_string(cols) + " ";
+		output += "|\n";
 	}
+	pretty_string(output);
 	return output;
 }
 
@@ -87,4 +90,17 @@ std::vector<int> Adjacency_Matrix::parse_file_input(std::string& line)
 		i = position + 1;
 	}
 	return output;
+}
+
+void Adjacency_Matrix::pretty_string(std::string& str_matrix) const
+{
+	size_t line_len{ str_matrix.size()/ a_matrix_.size() };
+	std::string dashes{ std::string(line_len - 1, '-') + "\n"};
+	str_matrix.insert(0, dashes);
+	str_matrix.append(dashes);
+}
+
+int Adjacency_Matrix::get_spaces(const int number) const
+{
+	return number > 0 ? (int) log10((double) number) + 1 : 1;
 }
