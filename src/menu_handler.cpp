@@ -1,4 +1,6 @@
 #include "../include/menu_handler.hpp"
+#include "../include/brute_force.hpp"
+#include "../include/timer.hpp"
 
 #include <string>
 #include <iostream>
@@ -94,10 +96,14 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			}
 			case 3:	// Algorytmy
 			{
-				break;
-			}
-			default:
-			{
+				auto t{Timer<Path, Adjacency_Matrix&>(tsp::brute_force::run)};
+				double time {t.run(matrix)};
+				clear_term();
+				std::cout << matrix.to_string();
+				std::cout << t.get_output().to_string();
+				std::cout << "\n Time[ms] >> " << time * 1000;
+				getchar();
+				getchar();
 				break;
 			}
 		}

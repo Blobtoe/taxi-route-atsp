@@ -76,7 +76,7 @@ void Timer<T, Args ...>::start_counter()
 template<typename T, typename ... Args>
 double Timer<T, Args ...>::get_time()
 {
-	return (clock() - start_time_) / static_cast<double>(CLOCKS_PER_SEC);
+	return (clock() - start_time_) / static_cast<double>(CLOCKS_PER_SEC) ;	// Time in seconds.
 }
 
 #elif _WIN32

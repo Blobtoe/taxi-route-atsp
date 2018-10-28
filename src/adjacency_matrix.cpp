@@ -1,6 +1,7 @@
 ﻿#include "../include/adjacency_matrix.hpp"
 #include "../include/file_handler.hpp"
 #include <iostream>
+#include <math.h>
 
 Adjacency_Matrix::Adjacency_Matrix()
 {}
@@ -46,7 +47,7 @@ std::string Adjacency_Matrix::to_string() const
 	{
 		output += "| ";
 		for(auto& cols: rows)
-			output += std::string(2 - get_spaces(cols),' ') 
+			output += std::string(3 - get_spaces(cols),' ') 
 					+ std::to_string(cols) + " ";
 		output += "|\n";
 	}
@@ -102,5 +103,9 @@ void Adjacency_Matrix::pretty_string(std::string& str_matrix) const
 
 int Adjacency_Matrix::get_spaces(const int number) const
 {
-	return number > 0 ? (int) log10((double) number) + 1 : 1;
+	auto pos_number{ abs(number) };
+	auto digits{(int) log10((double) pos_number) + 1};
+	if(number < 0)
+		digits++;
+	return digits;
 }
