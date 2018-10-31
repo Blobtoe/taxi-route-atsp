@@ -13,7 +13,7 @@ namespace tsp{
         std::vector<int> perms{ std::vector<int>(matrix.size() + 1) };
         init_perms(perms);
 
-        bf(perms, 1, matrix.size() - 1, p);
+        permutate(perms, 1, matrix.size() - 1, p);
         return p;
     }
 
@@ -26,7 +26,7 @@ namespace tsp{
 
 	// Permutuje indeksy w wektorze.
 	// Po uzyskaniu jednej pełnej permutacji sprawdza, czy ta ścieżka jest lepsza od aktualnej.
-    void brute_force::bf(std::vector<int>& perms, int begin, int end, Path& p)
+    void brute_force::permutate(std::vector<int>& perms, int begin, int end, Path& p)
     {
 		if (begin == end)
 			update_if_better(perms, p);
@@ -35,7 +35,7 @@ namespace tsp{
             for (int i{ begin }; i <= end; ++i) 
             { 
                 std::swap(perms[begin], perms[i]); 
-                bf(perms, begin + 1, end, p); 
+                permutate(perms, begin + 1, end, p); 
                 std::swap(perms[begin], perms[i]);
             } 
         }
@@ -52,7 +52,7 @@ namespace tsp{
     }
 
 	// Zwraca koszt przejścia przez miasta o indeksach zawartych w "perms".
-    int brute_force::get_cost(std::vector<int>& perms)
+    int brute_force::get_cost(const std::vector<int>& perms)
     {
         int acc_cost{0};
 		int partial_cost{ 0 };

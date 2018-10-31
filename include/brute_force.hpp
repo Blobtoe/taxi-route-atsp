@@ -10,7 +10,6 @@ namespace tsp{
 
     public:
         brute_force() = delete;
-        ~brute_force() = delete;
 
         static Path run(Adjacency_Matrix& matrix);
 
@@ -18,9 +17,9 @@ namespace tsp{
         static Adjacency_Matrix mat_;
 
         static void init_perms(std::vector<int>& perms);
-        static void bf(std::vector<int>& permutations, int begin, int end, Path& p);
+        static void permutate(std::vector<int>& permutations, const int begin, const int end, Path& p);
         static void update_if_better(std::vector<int>& perms, Path& p);
-        static int get_cost(std::vector<int>& perms);
+        static int get_cost(const std::vector<int>& perms);
 		static void add_last_path(Path& p);
     };
 }

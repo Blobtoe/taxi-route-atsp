@@ -103,6 +103,8 @@ void Adjacency_Matrix::pretty_string(std::string& str_matrix) const
 
 int Adjacency_Matrix::get_spaces(const int number) const
 {
+	if(number == 0)
+		return 1;
 	auto pos_number{ abs(number) };
 	auto digits{(int) log10((double) pos_number) + 1};
 	if(number < 0)

@@ -16,7 +16,9 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/menu_handler.hpp
     ${CMAKE_SOURCE_DIR}/include/adjacency_matrix.hpp
     "${CMAKE_SOURCE_DIR}/include/path.hpp"
-    ${CMAKE_SOURCE_DIR}/include/brute_force.hpp)
+    ${CMAKE_SOURCE_DIR}/include/city.hpp
+    ${CMAKE_SOURCE_DIR}/include/brute_force.hpp
+    ${CMAKE_SOURCE_DIR}/include/branch_n_bound.hpp)
 
 set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/main.cpp
@@ -24,7 +26,9 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/menu_handler.cpp
     ${CMAKE_SOURCE_DIR}/src/adjacency_matrix.cpp
     "${CMAKE_SOURCE_DIR}/src/path.cpp"
-    ${CMAKE_SOURCE_DIR}/src/brute_force.cpp)
+    ${CMAKE_SOURCE_DIR}/src/city.cpp
+    ${CMAKE_SOURCE_DIR}/src/brute_force.cpp
+    ${CMAKE_SOURCE_DIR}/src/branch_n_bound.cpp)
 
 add_executable(tsp ${SOURCES} ${HEADERS})
 

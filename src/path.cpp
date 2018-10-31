@@ -1,9 +1,19 @@
 #include "../include/path.hpp"
 #include <iostream>
 
+Path::Path()
+    : path_{ std::vector<int>() }, cost_{0}
+{}
+
 Path::Path(std::vector<int> path, const int cost)
     : path_{ path }, cost_{ cost }
 {}
+
+void Path::add_to_path(const int node, const int cost)
+{
+    path_.push_back(node);
+    cost_ += cost;
+}
 
 std::string Path::to_string()
 {
@@ -11,7 +21,7 @@ std::string Path::to_string()
     std::string cost{ get_cost_str() };
     std::string output{ "| Path >> " + path + " |\n"};
 
-    int line_len{ output.size() };
+    size_t line_len{ output.size() };
 
     output += "| Cost >> " + cost;
     pretty_string(output, line_len);
@@ -20,8 +30,8 @@ std::string Path::to_string()
 
 void Path::pretty_string(std::string& path, int line_len)
 {
-    int cost_str_len{ path.size() - line_len};
-    int spaces{line_len - cost_str_len - 2};
+    size_t cost_str_len{ path.size() - line_len};
+    size_t spaces{line_len - cost_str_len - 2};
     
     // Justifies the last line and adds a vertical line to it.
     path.append(std::string(spaces, ' '));  
