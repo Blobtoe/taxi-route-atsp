@@ -15,6 +15,11 @@ void Path::add_to_path(const int node, const int cost)
     cost_ += cost;
 }
 
+int Path::get_prev_city()
+{
+    return path_[path_.size() - 1];
+}
+
 std::string Path::to_string()
 {
     std::string path{ get_path_str() };

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <string>
 
@@ -12,6 +14,9 @@ public:
     ~Path() = default;
 
     void add_to_path(const int node, const int cost);
+    
+    int get_prev_city();
+
     std::string to_string();
 
 private:

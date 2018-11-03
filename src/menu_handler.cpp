@@ -1,6 +1,7 @@
 #include "../include/menu_handler.hpp"
 #include "../include/brute_force.hpp"
 #include "../include/timer.hpp"
+#include "../include/branch_n_bound.hpp"
 
 #include <string>
 #include <iostream>
@@ -96,12 +97,13 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			}
 			case 3:	// Algorytmy
 			{
-				auto t{Timer<Path, Adjacency_Matrix&>(tsp::brute_force::run)};
-				double time {t.run(matrix)};
-				clear_term();
+				//auto t{Timer<Path, Adjacency_Matrix&>(tsp::brute_force::run)};
+				//double time {t.run(matrix)};
+				auto path{ tsp::branch_n_bound::bfs(matrix)};
+				//clear_term();
 				std::cout << matrix.to_string();
-				std::cout << t.get_output().to_string();
-				std::cout << "\n Time[ms] >> " << time * 1000;
+				//std::cout << t.get_output().to_string();
+				std::cout << path.to_string();
 				getchar();
 				getchar();
 				break;

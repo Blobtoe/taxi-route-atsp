@@ -1,5 +1,6 @@
 ﻿#include "../include/adjacency_matrix.hpp"
 #include "../include/file_handler.hpp"
+
 #include <iostream>
 #include <math.h>
 
@@ -30,7 +31,7 @@ bool Adjacency_Matrix::operator!=(const Adjacency_Matrix& rhs) const
     return !(*this==rhs);
 }
 
-const std::vector<int>& Adjacency_Matrix::operator[](const int index) const
+std::vector<int>& Adjacency_Matrix::operator[](const int index)
 {
     return a_matrix_.at(index);
 }
@@ -53,6 +54,11 @@ std::string Adjacency_Matrix::to_string() const
 	}
 	pretty_string(output);
 	return output;
+}
+
+std::vector<std::vector<int>> Adjacency_Matrix::data() const
+{
+	return a_matrix_;
 }
 
 bool Adjacency_Matrix::load_from_file(std::fstream& in_file)
@@ -110,4 +116,15 @@ int Adjacency_Matrix::get_spaces(const int number) const
 	if(number < 0)
 		digits++;
 	return digits;
+}
+
+std::vector<int> Adjacency_Matrix::get_neighbours(int node) const
+{
+	auto output{ std::vector<int>() };
+	for(int i{0}; i < a_matrix_[node].size(); ++i)
+	{
+		if(a_matrix_[node][i] != 0)
+			output.push_back(i);
+	}
+	return output;
 }
