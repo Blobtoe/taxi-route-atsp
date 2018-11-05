@@ -17,7 +17,7 @@ namespace tsp{
         branch_n_bound() = delete;
 
         static Path bfs(const Adjacency_Matrix& matrix);
-        //static Path dfs(const Adjacency_Matrix& matrix);
+        static Path dfs(const Adjacency_Matrix& matrix);
     
     private:
         static Adjacency_Matrix matrix_;
@@ -26,8 +26,14 @@ namespace tsp{
         static void init_matrix();
         
         static Path bfs(city_p_queue& city_q);
+        static void handle_city(City& city, branch_n_bound::city_p_queue& city_, Path& best_path);
         static void push_child_cities(City& parent_city, city_p_queue& city_q);
         static void update_cost(City& city, Path& best_path);
+        static void finalize_path(Path& best_path);
+
+        static Path dfs(std::stack<City>& city_s);
+        static void push_child_cities(City& parent_city, std::stack<City>& city_s);
+        static void calc_travel_cost(Path& path);
         //static Path dfs(std::stack<City>& city_s);
     };
 }

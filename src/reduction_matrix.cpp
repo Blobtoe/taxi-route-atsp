@@ -19,7 +19,6 @@ namespace tsp{
     {
         fill_row(row);
         fill_column(column);
-        a_matrix_[column][row] = INT_MAX;
         a_matrix_[column][0] = INT_MAX;
     }
 
@@ -50,7 +49,7 @@ namespace tsp{
         for(auto& rows : a_matrix_)
         {
             min = std::min_element(rows.begin(), rows.end());
-            if(*min != INT_MAX)
+            if(*min != INT_MAX && *min != 0)
             {
                 reduction += *min;
                 std::for_each(rows.begin(), rows.end(), [&min](int& element){
@@ -68,7 +67,7 @@ namespace tsp{
         for(size_t i{0}; i < a_matrix_.size(); ++i)
         {
             min = get_column_min(i);
-            if(min != INT_MAX)
+            if(min != INT_MAX && min != 0)
             {
                 reduction += min;
                 for(auto& rows: a_matrix_)
@@ -101,7 +100,7 @@ namespace tsp{
         auto neighbours{ std::vector<int>() };
         for(int i{0}; i < a_matrix_[node].size(); ++i)
         {
-            if(a_matrix_[node][i] != INT_MAX && i != 0)
+            if(a_matrix_[node][i] != INT_MAX && a_matrix_[node][i] != -1 && i != 0)
                 neighbours.push_back(i);
         }
         return neighbours;

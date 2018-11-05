@@ -13,7 +13,7 @@
 int main()
 {
 	Menu m{ Menu() };
-	std::string subtitles[] = {"Wczytaj dane z pliku.", "Wyswietl aktualne dane.", "Uruchom algorytmy."};
-	m.run(subtitles, 3, "Menu");
+	std::string subtitles[] = {"Wczytaj dane z pliku.", "Wyswietl aktualne dane.", "Uruchom algorytmy.", "Wyjscie"};
+	m.run(subtitles, 4, "Menu");
 	return 0;
 }

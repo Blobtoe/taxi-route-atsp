@@ -12,7 +12,7 @@ namespace tsp{
         add_to_path(index, 0);
     }
 
-    City::City(const City& city, const int index, const int travel_cost)
+    City::City(const City city, const int index, const int travel_cost)
         : index_{ index },
         reduction_matrix_{ city.reduction_matrix_ }, 
         previous_path_{ city.previous_path_ }, 

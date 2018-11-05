@@ -34,5 +34,7 @@ private:
 	int longest_subtitle(const std::string subtitles[], size_t size) const;
 	
 	void handle_input(const std::string subtitles[], size_t size, std::string title);
+	void get_filename();
+	void display_matrix();
 	void load_from_file(std::string& filename);
 };

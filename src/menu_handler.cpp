@@ -72,7 +72,8 @@ std::string Menu::add_extra_chars(const std::string& line, const unsigned line_n
 void Menu::handle_input(const std::string subtitles[], size_t size, std::string title)
 {
 	int choice = 4;
-	while(true)
+	bool exit = false;
+	while(!exit)
 	{
 		draw_menu(subtitles, size, title);
 		std::cin >> choice;
@@ -80,36 +81,48 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 		{
 			case 1:
 			{
-				std::string filename;
-				std::cout << " Podaj nazwe pliku >> ";
-				std::cin >> filename;
-				load_from_file(filename);
+				get_filename();
 				break;
 			}
 			case 2:
 			{
-				clear_term();
-				if(data_loaded)
-					std::cout << matrix.to_string();
-				getchar();
-				getchar();
+				display_matrix();
 				break;
 			}
-			case 3:	// Algorytmy
+			case 3:
 			{
-				//auto t{Timer<Path, Adjacency_Matrix&>(tsp::brute_force::run)};
-				//double time {t.run(matrix)};
 				auto path{ tsp::branch_n_bound::bfs(matrix)};
 				//clear_term();
 				std::cout << matrix.to_string();
-				//std::cout << t.get_output().to_string();
 				std::cout << path.to_string();
 				getchar();
 				getchar();
 				break;
 			}
+			case 4:
+			{
+				exit = true;
+				break;
+			}
 		}
 	}
+}
+
+void Menu::get_filename()
+{
+	std::string filename;
+	std::cout << " Podaj nazwe pliku >> ";
+	std::cin >> filename;
+	load_from_file(filename);
+}
+
+void Menu::display_matrix()
+{
+	clear_term();
+	if(data_loaded)
+		std::cout << matrix.to_string();
+	getchar();
+	getchar();
 }
 
 void Menu::load_from_file(std::string& filename)
