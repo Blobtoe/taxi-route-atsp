@@ -19,7 +19,6 @@ namespace tsp
         void reduce_matrix();
 
         int get_reduction_cost() const;
-        std::vector<int> get_neighbours(int node) const override;
 
     private:
         int reduction_cost_;

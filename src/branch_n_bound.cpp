@@ -24,14 +24,19 @@ namespace tsp{
 
     Path branch_n_bound::bfs(branch_n_bound::city_p_queue& city_q)
     {
+        std::cout << std::endl << "xddd ";
         Path best_path;
         while(!city_q.empty())
         {
+            std::cout << city_q.size() << std::endl;
             City current_city{ city_q.top() };
             city_q.pop();
             handle_city(current_city, city_q, best_path);
+            std::cout << city_q.size() << std::endl;
         }
+        std::cout << "halo";
         finalize_path(best_path);
+        std::cout << std::endl << "xddd " << std::endl << best_path.to_string();
         return best_path;
     }
 
@@ -55,7 +60,7 @@ namespace tsp{
     void branch_n_bound::push_child_cities(City& parent_city, branch_n_bound::city_p_queue& city_q)
     {
         int parent_index{ parent_city.get_index() }, travel_cost;
-        std::vector<int> neighbours{ parent_city.get_neighbours() };
+        std::vector<int> neighbours{ get_neighbours(parent_city) };
 
         for(auto& neighbour: neighbours)
         {
@@ -98,7 +103,7 @@ namespace tsp{
         {
             City current_city{ city_s.top() };
             city_s.pop();
-
+            
             if(current_city.get_path_size() == matrix_.size())
                 update_cost(current_city, best_path);
             else if(current_city.get_bound() <= best_cost_)
@@ -111,13 +116,31 @@ namespace tsp{
     void branch_n_bound::push_child_cities(City& parent_city, std::stack<City>& city_s)
     {
         int parent_index{ parent_city.get_index() }, travel_cost;
-        std::vector<int> neighbours{ parent_city.get_neighbours() };
-
+        std::vector<int> neighbours{ get_neighbours(parent_city) };
         for(auto& neighbour: neighbours)
         {
             travel_cost = parent_city.get_travel_cost(parent_index, neighbour);
             city_s.push(
                 City(parent_city, neighbour, travel_cost));
+        }
+    }
+
+    std::vector<int> branch_n_bound::get_neighbours(City& city)
+    {
+        int index{ city.get_index() };
+        auto neighbours{ matrix_.get_neighbours(index) };
+        remove_passed_neighbours(neighbours, city);
+        return neighbours;
+    }
+
+    void branch_n_bound::remove_passed_neighbours(std::vector<int>& neighbours, City& city)
+    {
+        auto passed_nodes{ city.get_path().path_ };
+        for(auto& neighbour: neighbours)
+        {
+            auto result{ std::find(passed_nodes.begin(), passed_nodes.end(), neighbour)};
+            if(result != passed_nodes.end())
+                neighbours.erase(result);
         }
     }
 }

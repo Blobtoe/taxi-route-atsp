@@ -34,6 +34,7 @@ namespace tsp{
         static Path dfs(std::stack<City>& city_s);
         static void push_child_cities(City& parent_city, std::stack<City>& city_s);
         static void calc_travel_cost(Path& path);
-        //static Path dfs(std::stack<City>& city_s);
+        static std::vector<int> get_neighbours(City& city);
+        static void remove_passed_neighbours(std::vector<int>& neighbours, City& city);
     };
 }

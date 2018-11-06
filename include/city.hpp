@@ -19,9 +19,6 @@ namespace tsp{
         City(const City city, const int index, const int travel_cost);
         ~City() = default;
 
-        // bool operator==(const City& rhs);
-        // bool operator!=(const City& rhs);
-
         int get_bound() const;
         int get_path_size() const;
         int get_index() const;

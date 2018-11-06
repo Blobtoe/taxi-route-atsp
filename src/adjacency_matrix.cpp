@@ -123,7 +123,7 @@ std::vector<int> Adjacency_Matrix::get_neighbours(int node) const
 	auto output{ std::vector<int>() };
 	for(int i{0}; i < a_matrix_[node].size(); ++i)
 	{
-		if(a_matrix_[node][i] != 0)
+		if(a_matrix_[node][i] != 0 && i != node)
 			output.push_back(i);
 	}
 	return output;
