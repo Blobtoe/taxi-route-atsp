@@ -121,7 +121,7 @@ int Adjacency_Matrix::get_spaces(const int number) const
 std::vector<int> Adjacency_Matrix::get_neighbours(int node) const
 {
 	auto output{ std::vector<int>() };
-	for(int i{0}; i < a_matrix_[node].size(); ++i)
+	for(int i{1}; i < a_matrix_[node].size(); ++i)
 	{
 		if(a_matrix_[node][i] != 0 && i != node)
 			output.push_back(i);

@@ -24,19 +24,14 @@ namespace tsp{
 
     Path branch_n_bound::bfs(branch_n_bound::city_p_queue& city_q)
     {
-        std::cout << std::endl << "xddd ";
         Path best_path;
         while(!city_q.empty())
         {
-            std::cout << city_q.size() << std::endl;
             City current_city{ city_q.top() };
             city_q.pop();
             handle_city(current_city, city_q, best_path);
-            std::cout << city_q.size() << std::endl;
         }
-        std::cout << "halo";
         finalize_path(best_path);
-        std::cout << std::endl << "xddd " << std::endl << best_path.to_string();
         return best_path;
     }
 
@@ -136,10 +131,10 @@ namespace tsp{
     void branch_n_bound::remove_passed_neighbours(std::vector<int>& neighbours, City& city)
     {
         auto passed_nodes{ city.get_path().path_ };
-        for(auto& neighbour: neighbours)
+        for(auto& nodes: passed_nodes)
         {
-            auto result{ std::find(passed_nodes.begin(), passed_nodes.end(), neighbour)};
-            if(result != passed_nodes.end())
+            auto result{ std::find(neighbours.begin(), neighbours.end(), nodes)};
+            if(result != neighbours.end())
                 neighbours.erase(result);
         }
     }

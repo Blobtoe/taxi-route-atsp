@@ -5,6 +5,8 @@
 
 #include <string>
 #include <iostream>
+#include <time.h>
+
 
 void Menu::run(const std::string subtitles[], size_t size, const std::string title)
 {
@@ -91,9 +93,12 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			}
 			case 3:
 			{
-				auto path{ tsp::branch_n_bound::bfs(matrix)};
+				auto graph{ generate_graph(19) };
+				auto matrix123{ Adjacency_Matrix(graph)};
+				std::cout << matrix123.to_string();
+				auto path{ tsp::branch_n_bound::bfs(matrix123)};
 				//clear_term();
-				std::cout << matrix.to_string();
+				
 				std::cout << path.to_string();
 				getchar();
 				getchar();
@@ -138,4 +143,21 @@ void Menu::load_from_file(std::string& filename)
 		getchar();
 		clear_term();
 	}
+}
+
+std::vector<std::vector<int>> Menu::generate_graph(int nodes)
+{
+	std::vector<std::vector<int>> matrix;
+	matrix.resize( nodes , std::vector<int>( nodes , 0 ) );
+	int number = 0;
+	for(int i{0}; i < matrix.size(); ++i)
+	{
+		for(int j{i}; j < matrix.size(); ++j)
+		{
+			number = rand()%70 + 1;
+			matrix[i][j] = number;
+			matrix[j][i] = number;
+		}
+	}
+	return matrix;
 }
