@@ -9,11 +9,9 @@
 #include <string>
 #include <climits>
 #include <algorithm>
-#include <time.h>
 
 int main()
 {
-	srand(time(NULL));
 	Menu m{ Menu() };
 	std::string subtitles[] = {"Wczytaj dane z pliku.", "Wyswietl aktualne dane.", "Uruchom algorytmy.", "Wyjscie"};
 	m.run(subtitles, 4, "Menu");

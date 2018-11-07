@@ -37,6 +37,4 @@ private:
 	void get_filename();
 	void display_matrix();
 	void load_from_file(std::string& filename);
-
-	std::vector<std::vector<int>> generate_graph(int nodes);
 };

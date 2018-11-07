@@ -41,6 +41,7 @@ namespace tsp{
         reduction_cost_ = reduction;
     }
 
+    // Reduces the matrix by the smallest factor row wise.
     int Reduction_Matrix::horizontal_reduction()
     {
         std::vector<int>::iterator min;
@@ -59,6 +60,7 @@ namespace tsp{
         return reduction;
     }
 
+    // Reduces the matrix by the smallest factor column wise.
     int Reduction_Matrix::vertical_reduction()
     {
         int min{0}, reduction{0};
@@ -91,5 +93,16 @@ namespace tsp{
     int Reduction_Matrix::get_reduction_cost() const
     {
         return reduction_cost_;
+    }
+
+    std::vector<int> Reduction_Matrix::get_neighbours(int node) const
+    {
+        auto neighbours{ std::vector<int>() };
+        for(int i{0}; i < a_matrix_[node].size(); ++i)
+        {
+            if(a_matrix_[node][i] != INT_MAX && a_matrix_[node][i] != -1 && i != 0)
+                neighbours.push_back(i);
+        }
+        return neighbours;
     }
 }
