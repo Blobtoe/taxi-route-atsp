@@ -22,22 +22,6 @@ namespace tsp{
         add_to_path(index, travel_cost);
     }
 
-    City::City(const City& city)
-        : index_{city.index_},
-        reduction_matrix_{city.reduction_matrix_},
-        previous_path_{city.previous_path_},
-        lower_bound_{city.lower_bound_}
-    {}
-
-    City& City::operator=(const City& rhs)
-    {
-        index_ = rhs.index_;
-        reduction_matrix_ = rhs.reduction_matrix_;
-        previous_path_ = rhs.previous_path_;
-        lower_bound_ = rhs.lower_bound_;
-        return *this;
-    }
-
     int City::get_bound() const
     {
         return lower_bound_;

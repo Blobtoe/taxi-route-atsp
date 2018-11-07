@@ -91,9 +91,9 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			}
 			case 3:
 			{
+				clear_term();
+				std::cout << matrix.to_string();
 				auto xd = tsp::branch_n_bound(matrix);
-				//clear_term();
-				//std::cout << matrix.to_string();
 				getchar();
 				getchar();
 				break;

@@ -6,7 +6,6 @@
 #include <vector>
 #include <algorithm>
 
-
 namespace tsp{
     class City{
 
@@ -14,13 +13,11 @@ namespace tsp{
 
         City() = delete;
         City(const int index, const std::vector<std::vector<int>>& matrix, const int travel_cost);
-        City& operator=(const City& rhs);
-        City(const City& city);
         City(const City& city, const int index, const int travel_cost);
-        ~City() = default;
 
-        // bool operator==(const City& rhs);
-        // bool operator!=(const City& rhs);
+        City(const City& city) = default;
+        City& operator=(const City& rhs) = default;
+        ~City() = default;
 
         int get_bound() const;
         int get_path_size() const;

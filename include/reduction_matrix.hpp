@@ -2,12 +2,15 @@
 
 #include "adjacency_matrix.hpp"
 #include <climits>
+#include <algorithm>
 
 namespace tsp
 {
     class Reduction_Matrix : public Adjacency_Matrix{
 
     public:
+        Reduction_Matrix() = delete;
+        
         Reduction_Matrix(Adjacency_Matrix matrix);
         Reduction_Matrix(std::vector<std::vector<int>> matrix);
         Reduction_Matrix(const Reduction_Matrix& r_m) = default;
@@ -28,6 +31,7 @@ namespace tsp
         void fill_column(int column);
 
         int horizontal_reduction();
+        int reduce_row(std::vector<std::vector<int>>::iterator row);
         int vertical_reduction();
         int get_row_min(const size_t row) const;
         int get_column_min(const size_t column) const;

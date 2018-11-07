@@ -19,7 +19,7 @@ namespace tsp{
     {
         fill_row(row);
         fill_column(column);
-        //a_matrix_[column][0] = INT_MAX;
+        a_matrix_[column][0] = INT_MAX;
     }
 
     void Reduction_Matrix::fill_row(int row)
@@ -44,35 +44,27 @@ namespace tsp{
     // Reduces the matrix by the smallest factor row wise.
     int Reduction_Matrix::horizontal_reduction()
     {
-        int min{0};
+        int min;
         int reduction{0};
-        for(int i{0}; i < a_matrix_.size(); ++i)
-        {
-            min = get_row_min(i);
-            if(min != INT_MAX)
-            {
-                reduction += min;
-                for(int k{0}; k < a_matrix_.size(); ++k)
-                {
-                    if(a_matrix_[i][k] != INT_MAX)
-                        a_matrix_[i][k] -= min;
-                }
-            }
-        }
+        for(auto row{ a_matrix_.begin()}; row != std::end(a_matrix_); ++row)
+            reduction += reduce_row(row);
+
         return reduction;
     }
 
-    int Reduction_Matrix::get_row_min(const size_t row) const
+    int Reduction_Matrix::reduce_row(std::vector<std::vector<int>>::iterator row)
     {
-        int min{INT_MAX};
-        for(int i{0}; i < a_matrix_.size(); ++i)
+        int min{ *( std::min_element(row->begin(), row->end()) ) };
+        if(min != INT_MAX && min != 0)
         {
-            if(a_matrix_[row][i] < min)
+            std::for_each(row->begin(), row->end(), [&min](int& element)
             {
-                min = a_matrix_[row][i];
-            }
+                if(element != INT_MAX)
+                    element -= min;
+            });
+            return min;
         }
-        return min;
+        return 0;
     }
 
     // Reduces the matrix by the smallest factor column wise.
@@ -89,7 +81,8 @@ namespace tsp{
                 {
                     if(rows[i] != INT_MAX)
                         rows[i] -= min;
-                }}
+                }
+            }
         }
         return reduction;
     }
