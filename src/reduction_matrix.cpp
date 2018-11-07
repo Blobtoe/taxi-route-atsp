@@ -100,7 +100,7 @@ namespace tsp{
         auto neighbours{ std::vector<int>() };
         for(int i{0}; i < a_matrix_[node].size(); ++i)
         {
-            if(a_matrix_[node][i] != INT_MAX && a_matrix_[node][i] != -1 && i != 0)
+            if(a_matrix_[node][i] != INT_MAX)
                 neighbours.push_back(i);
         }
         return neighbours;

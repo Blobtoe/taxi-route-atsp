@@ -74,10 +74,9 @@ namespace tsp{
     void branch_n_bound::calc_travel_cost(Path& path)
     {
         int travel_c{0};
-        for(int i{0}; i < path.path_.size() - 1; ++i)
-        {
-            travel_c += matrix_[path.path_[i]][path.path_[i+1]];
-        }
+        for(auto& p: path.path_)
+            travel_c += matrix_[p][++p];
+            
         path.cost_ = travel_c;
     }
 

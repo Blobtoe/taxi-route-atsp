@@ -49,7 +49,15 @@ namespace tsp{
 
     std::vector<int> City::get_neighbours() const
     {
-        return reduction_matrix_.get_neighbours(index_);
+        auto neighbours{ reduction_matrix_.get_neighbours(index_)};
+        auto passed_nodes{ previous_path_.path_ };
+        for(auto& p: passed_nodes)
+        {
+            auto result{ std::find(neighbours.begin(), neighbours.end(), p)};
+            if(result != neighbours.end())
+                neighbours.erase(result);       
+        }
+        return neighbours;
     }
 
     void City::reduce_matrix()

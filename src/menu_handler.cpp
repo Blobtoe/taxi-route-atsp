@@ -92,7 +92,7 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			case 3:
 			{
 				auto path{ tsp::branch_n_bound::bfs(matrix)};
-				//clear_term();
+				clear_term();
 				std::cout << matrix.to_string();
 				std::cout << path.to_string();
 				getchar();
@@ -138,4 +138,21 @@ void Menu::load_from_file(std::string& filename)
 		getchar();
 		clear_term();
 	}
+}
+
+std::vector<std::vector<int>> Menu::generate_random(int nodes)
+{
+	int number{0};
+	std::vector<std::vector<int>> graph;
+	graph.resize(nodes, std::vector<int>(nodes, 0));
+	for(int i{0}; i < graph.size(); ++i)
+	{
+		for(int j{i}; j < graph.size(); ++j)
+		{
+			number = rand() % 70 + 1;
+			graph[i][j] = number;
+			graph[j][i] = number;
+		}
+	}
+	return graph;
 }

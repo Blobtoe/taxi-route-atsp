@@ -8,8 +8,6 @@ project(tsp
         DESCRIPTION "Asymmetric Travelling Salesman Problem"
         LANGUAGES CXX)     
 
-set(CMAKE_BUILD_TYPE Debug)
-
 set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/file_handler.hpp
     ${CMAKE_SOURCE_DIR}/include/timer.hpp
