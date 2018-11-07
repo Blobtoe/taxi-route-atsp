@@ -3,19 +3,21 @@
 
 namespace tsp{
 
-    Adjacency_Matrix branch_n_bound::matrix_ = Adjacency_Matrix();
-    int branch_n_bound::best_cost_ = INT_MAX;
-
+    branch_n_bound::branch_n_bound(const Adjacency_Matrix& matrix)
+        : matrix_{ matrix }
+    {
+        best_cost_ = INT_MAX;
+        auto path{bfs()};
+        std::cout << path.to_string() << std::endl;
+    }
     void branch_n_bound::init_matrix()
     {
         for(int i{0}; i < matrix_.size(); ++i)
             branch_n_bound::matrix_[i][i] = INT_MAX;
     }
 
-    Path branch_n_bound::bfs(const Adjacency_Matrix& matrix)
+    Path branch_n_bound::bfs()
     {
-        branch_n_bound::matrix_ = matrix;
-        branch_n_bound::best_cost_ = INT_MAX;
         init_matrix();
         auto city_q{ city_p_queue() };
         city_q.push(City(0, branch_n_bound::matrix_.data(), 0));
@@ -74,8 +76,8 @@ namespace tsp{
     void branch_n_bound::calc_travel_cost(Path& path)
     {
         int travel_c{0};
-        for(auto& p: path.path_)
-            travel_c += matrix_[p][++p];
+        for(int i{0}; i < path.path_.size() - 1; ++i)
+            travel_c += matrix_[path.path_[i]][path.path_[i+1]];
             
         path.cost_ = travel_c;
     }

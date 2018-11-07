@@ -2,7 +2,7 @@
 
 namespace tsp{
 
-    City::City(const int index, const std::vector<std::vector<int>> matrix, const int travel_cost = 0)
+    City::City(const int index, const std::vector<std::vector<int>>& matrix, const int travel_cost = 0)
         : index_{ index }, reduction_matrix_{ matrix }, 
         previous_path_{ Path() }, 
         lower_bound_{ travel_cost }
@@ -12,7 +12,7 @@ namespace tsp{
         add_to_path(index, 0);
     }
 
-    City::City(const City city, const int index, const int travel_cost)
+    City::City(const City& city, const int index, const int travel_cost)
         : index_{ index },
         reduction_matrix_{ city.reduction_matrix_ }, 
         previous_path_{ city.previous_path_ }, 
@@ -20,6 +20,22 @@ namespace tsp{
     {
         reduce_matrix();
         add_to_path(index, travel_cost);
+    }
+
+    City::City(const City& city)
+        : index_{city.index_},
+        reduction_matrix_{city.reduction_matrix_},
+        previous_path_{city.previous_path_},
+        lower_bound_{city.lower_bound_}
+    {}
+
+    City& City::operator=(const City& rhs)
+    {
+        index_ = rhs.index_;
+        reduction_matrix_ = rhs.reduction_matrix_;
+        previous_path_ = rhs.previous_path_;
+        lower_bound_ = rhs.lower_bound_;
+        return *this;
     }
 
     int City::get_bound() const
@@ -49,15 +65,7 @@ namespace tsp{
 
     std::vector<int> City::get_neighbours() const
     {
-        auto neighbours{ reduction_matrix_.get_neighbours(index_)};
-        auto passed_nodes{ previous_path_.path_ };
-        for(auto& p: passed_nodes)
-        {
-            auto result{ std::find(neighbours.begin(), neighbours.end(), p)};
-            if(result != neighbours.end())
-                neighbours.erase(result);       
-        }
-        return neighbours;
+        return reduction_matrix_.get_neighbours(index_);
     }
 
     void City::reduce_matrix()

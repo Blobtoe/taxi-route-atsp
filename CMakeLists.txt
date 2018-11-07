@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.2)
-
+set(CMAKE_BUILD_TYPE Debug)
 if(${CMAKE_VERSION} VERSION_LESS 2.8.2)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
