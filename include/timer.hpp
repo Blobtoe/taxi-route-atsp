@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <functional>
+#include <optional>
 
 template<typename T, typename ... Args>
 class Timer{

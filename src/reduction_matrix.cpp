@@ -44,7 +44,6 @@ namespace tsp{
     // Reduces the matrix by the smallest factor row wise.
     int Reduction_Matrix::horizontal_reduction()
     {
-        int min;
         int reduction{0};
         for(auto row{ a_matrix_.begin()}; row != std::end(a_matrix_); ++row)
             reduction += reduce_row(row);
