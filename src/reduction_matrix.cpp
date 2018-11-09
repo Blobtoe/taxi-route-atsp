@@ -105,7 +105,7 @@ namespace tsp{
     std::vector<int> Reduction_Matrix::get_neighbours(int node) const
     {
         auto neighbours{ std::vector<int>() };
-        for(int i{0}; i < a_matrix_[node].size(); ++i)
+        for(size_t i{0}; i < a_matrix_[node].size(); ++i)
         {
             if(a_matrix_[node][i] != INT_MAX)
                 neighbours.push_back(i);

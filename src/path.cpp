@@ -49,7 +49,7 @@ void Path::pretty_string(std::string& path, int line_len)
 std::string Path::get_path_str()
 {
     auto output{ std::string() };
-    for(int i{0}; i < path_.size(); ++i)
+    for(size_t i{0}; i < path_.size(); ++i)
     {
         output += std::to_string(path_[i]);
         if(i < path_.size() - 1)

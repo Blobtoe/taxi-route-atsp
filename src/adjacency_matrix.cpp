@@ -85,7 +85,7 @@ std::vector<int> Adjacency_Matrix::parse_file_input(std::string& line)
 	int value{ 0 }, position{ 0 };
 	std::string number;
 
-	for (int i{ 0 }; i < line.size();)
+	for (size_t i{ 0 }; i < line.size();)
 	{
 		position = line.find(" ", i);
 
@@ -121,7 +121,7 @@ int Adjacency_Matrix::get_spaces(const int number) const
 std::vector<int> Adjacency_Matrix::get_neighbours(int node) const
 {
 	auto output{ std::vector<int>() };
-	for(int i{0}; i < a_matrix_[node].size(); ++i)
+	for(size_t i{0}; i < a_matrix_[node].size(); ++i)
 	{
 		if(a_matrix_[node][i] != 0)
 			output.push_back(i);

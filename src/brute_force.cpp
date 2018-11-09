@@ -19,7 +19,7 @@ namespace tsp{
 
     void brute_force::init_perms(std::vector<int>& perms)
     {
-        for(int i{0}; i < perms.size() - 1; ++i)
+        for(size_t i{0}; i < perms.size() - 1; ++i)
             perms[i] = i;
 		perms[perms.size() - 1] = 0;
     }
@@ -57,7 +57,7 @@ namespace tsp{
         int acc_cost{0};
 		int partial_cost{ 0 };
 
-		for (int i{ 0 }; i + 1 < perms.size(); ++i)
+		for (size_t i{ 0 }; i + 1 < perms.size(); ++i)
 		{
 			partial_cost = mat_[perms[i]][perms[i + 1]];
 			if (partial_cost == 0)

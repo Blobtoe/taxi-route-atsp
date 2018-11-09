@@ -34,8 +34,8 @@ void Menu::clear_term() const
 
 int Menu::longest_subtitle(const std::string subtitles[], size_t size) const
 {
-	int max_len{0};
-	for(int i{0}; i < size; ++i)
+	unsigned max_len{0};
+	for(size_t i{0}; i < size; ++i)
 	{
 		if(max_len < subtitles[i].size())
 			max_len = subtitles[i].size();
@@ -58,7 +58,7 @@ void Menu::draw_title(const std::string& title, const unsigned line_len) const
 
 void Menu::draw_body(const std::string subtitles[], size_t size, const unsigned max_line) const
 {
-	for(int i{1}; i <= size; ++i)
+	for(size_t i{1}; i <= size; ++i)
 		std::cout << add_extra_chars(subtitles[i-1], i, max_line);
 }
 
@@ -94,6 +94,7 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 				clear_term();
 				std::cout << matrix.to_string();
 				auto xd = tsp::branch_n_bound(matrix);
+				std::cout << xd.bfs().to_string();
 				getchar();
 				getchar();
 				break;
@@ -144,9 +145,9 @@ std::vector<std::vector<int>> Menu::generate_random(int nodes)
 	int number{0};
 	std::vector<std::vector<int>> graph;
 	graph.resize(nodes, std::vector<int>(nodes, 0));
-	for(int i{0}; i < graph.size(); ++i)
+	for(size_t i{0}; i < graph.size(); ++i)
 	{
-		for(int j{i}; j < graph.size(); ++j)
+		for(size_t j{i}; j < graph.size(); ++j)
 		{
 			number = rand() % 70 + 1;
 			graph[i][j] = number;
