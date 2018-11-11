@@ -24,13 +24,13 @@ namespace tsp{
         int upper_bound_;
 
         void init_matrix();
-        Path bfs(city_p_queue& city_q);
+        Path run_bfs(city_p_queue& city_q);
         void handle_city(City& city, branch_n_bound::city_p_queue& city_, Path& best_path);
         void push_child_cities(City& parent_city, city_p_queue& city_q);
         void update_upper_bound(City& city, Path& best_path);
         void finalize_path(Path& best_path);
 
-        Path dfs(std::stack<City>& city_s);
+        Path run_dfs(std::stack<City>& city_s);
         void push_child_cities(City& parent_city, std::stack<City>& city_s);
         void calc_travel_cost(Path& path);
     };

@@ -14,7 +14,7 @@ int main()
 {
 	srand(time(NULL));
 	Menu m{ Menu() };
-	std::string subtitles[] = {"Wczytaj dane z pliku.", "Wyswietl aktualne dane.", "Uruchom algorytmy.", "Wyjscie"};
-	m.run(subtitles, 4, "Menu");
+	std::string subtitles[] = {"Wczytaj dane z pliku.", "Wygeneruj losowy graf", "Wyswietl aktualne dane.", "Uruchom algorytmy.", "Wyjscie"};
+	m.run(subtitles, 5, "Menu");
 	return 0;
 }

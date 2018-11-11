@@ -10,14 +10,14 @@
 #include <functional>
 #include <optional>
 
-template<typename T, typename ... Args>
+template<typename U, typename T, typename ... Args>
 class Timer{
 
 public:
     Timer() = delete;
 	
-	Timer(T(*fnc_to_measure)(Args ... args))
-		: fnc_to_measure_{ fnc_to_measure }
+	Timer(T(U::*fnc_to_measure)( Args ... args), U* context)
+		: fnc_to_measure_{ fnc_to_measure }, context_{ context }
 	{};
 
     ~Timer() = default;
@@ -30,7 +30,8 @@ public:
 
 private:
 
-    T (*fnc_to_measure_)(Args ... args);
+	U* context_;
+    T (U::*fnc_to_measure_)(Args ... args);
 	std::optional<T> alg_value;
 
     void start_counter();
@@ -47,16 +48,16 @@ private:
     #endif
 };
 
-template<typename T, typename ... Args>
-double Timer<T, Args ... >::run(Args ... args)
+template<typename U, typename T, typename ... Args>
+double Timer<U, T, Args ... >::run(Args ... args)
 {
 	start_counter();
-	alg_value = fnc_to_measure_(args ...);
+	alg_value = (context_->*fnc_to_measure_)(args ...);
 	return get_time();
 }
 
-template<typename T, typename ... Args>
-double Timer<T, Args ...>::run_average(const int executions)
+template<typename U, typename T, typename ... Args>
+double Timer<U, T, Args ...>::run_average(const int executions)
 {
 	double accu_time{ 0 };
 
@@ -81,8 +82,8 @@ double Timer<T, Args ...>::get_time()
 }
 
 #elif _WIN32
-template<typename T, typename ... Args>
-void Timer<T, Args ...>::start_counter()
+template<typename U, typename T, typename ... Args>
+void Timer<U, T, Args ...>::start_counter()
 {
 	LARGE_INTEGER per_f;
 	if (QueryPerformanceFrequency(&per_f))
@@ -93,8 +94,8 @@ void Timer<T, Args ...>::start_counter()
 	start_time_ = per_f.QuadPart;
 }
 
-template<typename T, typename ... Args>
-double Timer<T, Args ...>::get_time()
+template<typename U, typename T, typename ... Args>
+double Timer<U, T, Args ...>::get_time()
 {
 	LARGE_INTEGER per_f;
 	QueryPerformanceCounter(&per_f);
@@ -102,8 +103,8 @@ double Timer<T, Args ...>::get_time()
 }
 #endif
 
-template<typename T, typename ... Args>
-T Timer<T, Args ...>::get_output()
+template<typename U, typename T, typename ... Args>
+T Timer<U, T, Args ...>::get_output()
 {
 	if(alg_value.has_value())
 		return alg_value.value();

@@ -11,7 +11,7 @@ namespace tsp{
 
     public:
 
-        City() = delete;
+        City() = default;
         City(const int index, const std::vector<std::vector<int>>& matrix, const int travel_cost);
         City(const City& city, const int index, const int travel_cost);
 

@@ -3,17 +3,17 @@
 
 namespace tsp{
 
-	Adjacency_Matrix brute_force::mat_ = Adjacency_Matrix();
+	brute_force::brute_force(Adjacency_Matrix& matrix)
+		: mat_{ matrix }
+	{}
 
-    Path brute_force::run(Adjacency_Matrix& matrix)
+    Path brute_force::run()
     {
-        brute_force::mat_ = matrix;
-
         Path p{ Path(std::vector<int>(), INT_MAX) };
-        std::vector<int> perms{ std::vector<int>(matrix.size() + 1) };
+        std::vector<int> perms{ std::vector<int>(mat_.size() + 1) };
         init_perms(perms);
 
-        permutate(perms, 1, matrix.size() - 1, p);
+        permutate(perms, 1, mat_.size() - 1, p);
         return p;
     }
 

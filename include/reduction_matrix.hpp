@@ -9,7 +9,7 @@ namespace tsp
     class Reduction_Matrix : public Adjacency_Matrix{
 
     public:
-        Reduction_Matrix() = delete;
+        Reduction_Matrix() = default;
         
         Reduction_Matrix(Adjacency_Matrix matrix);
         Reduction_Matrix(std::vector<std::vector<int>> matrix);

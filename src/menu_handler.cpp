@@ -86,20 +86,26 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			}
 			case 2:
 			{
-				display_matrix();
+				int amount{ 0 };
+				std::cout << " Podaj ilosc wierzcholkow >> ";
+				std::cin >> amount;
+				matrix = Adjacency_Matrix(generate_random(amount));
+				data_loaded = true;
 				break;
 			}
 			case 3:
 			{
-				clear_term();
-				std::cout << matrix.to_string();
-				auto xd = tsp::branch_n_bound(matrix);
-				std::cout << xd.bfs().to_string();
-				getchar();
-				getchar();
+				if(data_loaded)
+					display_matrix();
 				break;
 			}
 			case 4:
+			{
+				if(data_loaded)
+					algorithm_menu();
+				break;
+			}
+			default:
 			{
 				exit = true;
 				break;
@@ -140,6 +146,53 @@ void Menu::load_from_file(std::string& filename)
 	}
 }
 
+void Menu::algorithm_menu()
+{
+	clear_term();
+	std::string subtitles[] = { "Brute Force", "Branch and Bound - Best First Search",
+		"Branch and Bound - Depth First Search", "Programowanie Dynamiczne", "Powrot" };
+	int choice = 4;
+	bool exit = false;
+	while (!exit)
+	{
+		draw_menu(subtitles, 5, "Algorytmy");
+		std::cin >> choice;
+		switch (choice)
+		{
+		case 1:
+		{
+			clear_term();
+			auto brutef{ tsp::brute_force(matrix) };
+			run_algo<tsp::brute_force>(&tsp::brute_force::run, &brutef);
+			break;
+		}
+		case 2:
+		{
+			clear_term();
+			auto bnb{ tsp::branch_n_bound(matrix) };
+			run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::bfs, &bnb);
+			break;
+		}
+		case 3:
+		{
+			clear_term();
+			auto bnb{ tsp::branch_n_bound(matrix) };
+			run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::dfs, &bnb);
+			break;
+		}
+		case 4:
+		{
+			break;
+		}
+		default:
+		{
+			exit = true;
+			break;
+		}
+		}
+	}
+}
+
 std::vector<std::vector<int>> Menu::generate_random(int nodes)
 {
 	int number{0};
@@ -149,7 +202,10 @@ std::vector<std::vector<int>> Menu::generate_random(int nodes)
 	{
 		for(size_t j{i}; j < graph.size(); ++j)
 		{
-			number = rand() % 70 + 1;
+			if (i == j)
+				number = 0;
+			else
+				number = rand() % 70 + 1;
 			graph[i][j] = number;
 			graph[j][i] = number;
 		}

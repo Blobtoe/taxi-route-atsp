@@ -19,15 +19,16 @@ namespace tsp{
 	{
         auto city_q{ city_p_queue() };
         city_q.push(City(0, branch_n_bound::matrix_.data(), 0));
-        return bfs(city_q);
+        return run_bfs(city_q);
     }
 
-    Path branch_n_bound::bfs(branch_n_bound::city_p_queue& city_q)
+    Path branch_n_bound::run_bfs(branch_n_bound::city_p_queue& city_q)
     {
         Path best_path;
+		City current_city;
         while(!city_q.empty())
         {
-            City current_city{ city_q.top() };
+            current_city = city_q.top();
             city_q.pop();
             handle_city(current_city, city_q, best_path);
         }
@@ -84,10 +85,10 @@ namespace tsp{
     {
         auto city_s{ std::stack<City>() };
         city_s.push(City(0, branch_n_bound::matrix_.data(), 0));
-        return dfs(city_s);
+        return run_dfs(city_s);
     }
 
-    Path branch_n_bound::dfs(std::stack<City>& city_s)
+    Path branch_n_bound::run_dfs(std::stack<City>& city_s)
     {
         Path best_path;
         while(!city_s.empty())
