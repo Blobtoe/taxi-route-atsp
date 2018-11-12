@@ -55,15 +55,9 @@ namespace tsp{
     int brute_force::get_cost(const std::vector<int>& perms)
     {
         int acc_cost{0};
-		int partial_cost{ 0 };
-
 		for (size_t i{ 0 }; i + 1 < perms.size(); ++i)
-		{
-			partial_cost = mat_[perms[i]][perms[i + 1]];
-			if (partial_cost == 0)
-				return INT_MAX;
-			acc_cost += partial_cost;
-		}
+			acc_cost += mat_[perms[i]][perms[i + 1]];
+
         return acc_cost;
     }
 }

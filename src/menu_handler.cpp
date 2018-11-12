@@ -2,6 +2,7 @@
 #include "../include/brute_force.hpp"
 #include "../include/timer.hpp"
 #include "../include/branch_n_bound.hpp"
+#include "../include/held_karp.hpp"
 
 #include <string>
 #include <iostream>
@@ -182,6 +183,9 @@ void Menu::algorithm_menu()
 		}
 		case 4:
 		{
+			clear_term();
+			auto hk{ tsp::held_karp(matrix) };
+			run_algo<tsp::held_karp>(&tsp::held_karp::run, &hk);
 			break;
 		}
 		default:
