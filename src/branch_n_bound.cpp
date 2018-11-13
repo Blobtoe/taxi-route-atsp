@@ -4,7 +4,7 @@
 namespace tsp{
 
 	branch_n_bound::branch_n_bound(const Adjacency_Matrix& matrix)
-		: matrix_{ matrix }, upper_bound_{ INT_MAX }
+		: matrix_{ matrix }, best_bound_{ INT_MAX }
 	{
 		init_matrix();
 	}
@@ -36,19 +36,20 @@ namespace tsp{
         return best_path;
     }
 
+	
     void branch_n_bound::handle_city(City& city, branch_n_bound::city_p_queue& city_q, Path& best_path)
     {
         if(city.get_path_size() == matrix_.size())
-            update_upper_bound(city, best_path);
-        else if(city.get_bound() < upper_bound_)  
+            update_best_bound(city, best_path);
+        else if(city.get_bound() < best_bound_)  
             push_child_cities(city, city_q);
     }
 
-    void branch_n_bound::update_upper_bound(City& city, Path& best_path)
+    void branch_n_bound::update_best_bound(City& city, Path& best_path)
     {
-        if(city.get_bound() < upper_bound_)
+        if(city.get_bound() < best_bound_)
         {
-            upper_bound_ = city.get_bound();
+            best_bound_ = city.get_bound();
             best_path = city.get_path();
         }
     }
@@ -97,8 +98,8 @@ namespace tsp{
             city_s.pop();
 
             if(current_city.get_path_size() == matrix_.size())
-                update_upper_bound(current_city, best_path);
-            else if(current_city.get_bound() <= upper_bound_)
+                update_best_bound(current_city, best_path);
+            else if(current_city.get_bound() <= best_bound_)
                 push_child_cities(current_city, city_s);
         }
         finalize_path(best_path);

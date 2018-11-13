@@ -25,7 +25,7 @@ namespace tsp{
     }
 
 	// Permutuje indeksy w wektorze.
-	// Po uzyskaniu jednej pełnej permutacji sprawdza, czy ta ścieżka jest lepsza od aktualnej.
+	// Po uzyskaniu jednej pełnej permutacji sprawdza, czy ta ścieżka jest lepsza od aktualnej najlepszej.
     void brute_force::permutate(std::vector<int>& perms, int begin, int end, Path& p)
     {
 		if (begin == end)

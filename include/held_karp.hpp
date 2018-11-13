@@ -34,16 +34,17 @@ namespace tsp
 			{ return lhs.mask_ & rhs.mask_; }
 
 			static visited_mask int_to_mask(int number) 
-				{ return visited_mask(pow(2, number)); };
+				{ return visited_mask(1 << number); };
 			
 		};
 
 		Adjacency_Matrix matrix_;
-		std::vector<std::vector<int>> saved_ops_;
+		std::vector<std::vector<std::pair<int, int>>> saved_ops_;
 		visited_mask full_mask_;
 
 		void init_matrix();
 		int h_k(visited_mask mask, int city);
 
+		Path get_path(int cost);
 	};
 }

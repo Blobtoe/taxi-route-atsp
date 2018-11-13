@@ -38,7 +38,6 @@ void Path::pretty_string(std::string& path, int line_len)
     size_t cost_str_len{ path.size() - line_len};
     size_t spaces{line_len - cost_str_len - 2};
     
-    // Justifies the last line and adds a vertical line to it.
     path.append(std::string(spaces, ' '));  
     path.append("|\n");
     std::string dashes{ std::string(line_len - 1, '-') + "\n"};
