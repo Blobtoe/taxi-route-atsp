@@ -19,7 +19,7 @@ namespace tsp{
 
     void brute_force::init_perms(std::vector<int>& perms)
     {
-        for(size_t i{0}; i < perms.size() - 1; ++i)
+        for(int i{0}; i < (int)perms.size() - 1; ++i)
             perms[i] = i;
 		perms[perms.size() - 1] = 0;
     }

@@ -9,10 +9,8 @@ tsp::held_karp::held_karp(const Adjacency_Matrix& matrix)
 	:	matrix_{ matrix }, 
 		full_mask_{ (1 << matrix.size())  - 1 }
 {
-	saved_ops_.resize(matrix_.size(), std::vector<std::pair<int,int>>( (1 << matrix_.size()) - 1 ) );
-
-	for (auto& i : saved_ops_)
-		std::fill_n(i.begin(), i.end(), std::pair<int, int>(INT_MAX, INT_MAX));
+	operations_.resize(matrix_.size(), std::vector<int>( (1 << matrix_.size()) - 1 , INT_MAX ));
+	travel_vec_.resize(matrix_.size(), std::vector<int>((1 << matrix_.size()) - 1, INT_MAX));
 }
 
 Path tsp::held_karp::run()
@@ -39,8 +37,8 @@ int tsp::held_karp::h_k(visited_mask mask, int city)
 	if (mask == full_mask_)
 		return matrix_[city][0];
 		
-	if (saved_ops_[city][mask.mask_].first != INT_MAX)
-		return saved_ops_[city][mask.mask_].first;
+	if (operations_[city][mask.mask_] != INT_MAX)
+		return operations_[city][mask.mask_];
 
 	int current{ INT_MAX };
 	for (int i{0}; i < matrix_.size(); ++i)
@@ -50,14 +48,14 @@ int tsp::held_karp::h_k(visited_mask mask, int city)
 		{
 			current = h_k(visited_mask::sum_masks(mask, i_mask), i) + matrix_[city][i];
 
-			if (current < saved_ops_[city][mask.mask_].first)
+			if (current < operations_[city][mask.mask_])
 			{
-				saved_ops_[city][mask.mask_].first = current;
-				saved_ops_[city][mask.mask_].second = i;
+				operations_[city][mask.mask_] = current;
+				travel_vec_[city][mask.mask_] = i;
 			}			
 		}
 	}
-	return saved_ops_[city][mask.mask_].first;
+	return operations_[city][mask.mask_];
 }
 
 // Przejście po kolejnych maskach w celu odtworzenia minimalnej ścieżki.
@@ -69,7 +67,7 @@ Path tsp::held_karp::get_path(int cost)
 
 	while(i_mask != full_mask_)
 	{
-		index = saved_ops_[index][i_mask.mask_].second;
+		index = travel_vec_[index][i_mask.mask_];
 		path.push_back(index);
 		i_mask = visited_mask::sum_masks(i_mask, visited_mask::int_to_mask(index));
 	}

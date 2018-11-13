@@ -6,7 +6,7 @@ namespace tsp{
         : index_{ index }, reduction_matrix_{ matrix }, 
         previous_path_{ Path() }, 
         lower_bound_{ travel_cost }
-    {
+    {	
         reduction_matrix_.reduce_matrix();
         lower_bound_ = reduction_matrix_.get_reduction_cost();
         add_to_path(index, 0);
@@ -18,7 +18,7 @@ namespace tsp{
         previous_path_{ city.previous_path_ }, 
         lower_bound_{ city.lower_bound_ + travel_cost }
     {
-        reduce_matrix();
+        fill_n_reduce();
         add_to_path(index, travel_cost);
     }
 
@@ -52,7 +52,7 @@ namespace tsp{
         return reduction_matrix_.get_neighbours(index_);
     }
 
-    void City::reduce_matrix()
+    void City::fill_n_reduce()
     {
         reduction_matrix_.fill_passed_nodes(
             previous_path_.get_prev_city(), index_);

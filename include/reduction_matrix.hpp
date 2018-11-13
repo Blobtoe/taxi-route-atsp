@@ -29,11 +29,11 @@ namespace tsp
         
         void fill_row(int row);
         void fill_column(int column);
-
-        int horizontal_reduction();
+        
         int reduce_row(std::vector<std::vector<int>>::iterator row);
+		int horizontal_reduction();
         int vertical_reduction();
-        int get_row_min(const size_t row) const;
+
         int get_column_min(const size_t column) const;
     };
 }

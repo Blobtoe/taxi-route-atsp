@@ -39,7 +39,8 @@ namespace tsp
 		};
 
 		Adjacency_Matrix matrix_;
-		std::vector<std::vector<std::pair<int, int>>> saved_ops_;
+		std::vector<std::vector<int>> operations_;
+		std::vector<std::vector<int>> travel_vec_;
 		visited_mask full_mask_;
 
 		void init_matrix();

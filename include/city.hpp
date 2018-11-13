@@ -26,6 +26,7 @@ namespace tsp{
         int get_travel_cost(int source, int dest) const;
         std::vector<int> get_neighbours() const;
 
+		// Funktor wykorzystywany w sortowaniu kolejki priorytetowej w algo: branch_n_bound.
         struct compare{
             bool operator()(const City& lhs, const City& rhs)
             {
@@ -40,7 +41,7 @@ namespace tsp{
         Reduction_Matrix reduction_matrix_;
         Path previous_path_;
 
-        void reduce_matrix();
+        void fill_n_reduce();
         void add_to_path(const int index, const int travel_cost);
     };
 }
