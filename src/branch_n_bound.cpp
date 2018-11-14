@@ -17,6 +17,7 @@ namespace tsp{
 
     Path branch_n_bound::bfs()
 	{
+		best_bound_ = INT_MAX;
         auto city_q{ city_p_queue() };
         city_q.push(City(0, branch_n_bound::matrix_.data(), 0));
         return run_bfs(city_q);
@@ -32,10 +33,10 @@ namespace tsp{
             city_q.pop();
             handle_city(current_city, city_q, best_path);
         }
+		best_path.algo_name_ = "B&B - BFS";
         finalize_path(best_path);
         return best_path;
     }
-
 	
     void branch_n_bound::handle_city(City& city, branch_n_bound::city_p_queue& city_q, Path& best_path)
     {
@@ -85,6 +86,7 @@ namespace tsp{
 
     Path branch_n_bound::dfs()
     {
+		best_bound_ = INT_MAX;
         auto city_s{ std::stack<City>() };
         city_s.push(City(0, branch_n_bound::matrix_.data(), 0));
         return run_dfs(city_s);
@@ -103,6 +105,7 @@ namespace tsp{
             else if(current_city.get_bound() <= best_bound_)
                 push_child_cities(current_city, city_s);
         }
+		best_path.algo_name_ = "B&B - DFS";
         finalize_path(best_path);
         return best_path;
     }

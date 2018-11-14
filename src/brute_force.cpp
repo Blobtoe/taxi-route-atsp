@@ -9,7 +9,7 @@ namespace tsp{
 
     Path brute_force::run()
     {
-        Path p{ Path(std::vector<int>(), INT_MAX) };
+        Path p{ Path(std::vector<int>(), INT_MAX, "BF") };
         std::vector<int> perms{ std::vector<int>(mat_.size() + 1) };
         init_perms(perms);
 

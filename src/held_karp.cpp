@@ -16,7 +16,6 @@ tsp::held_karp::held_karp(const Adjacency_Matrix& matrix)
 Path tsp::held_karp::run()
 {
 	init_matrix();
-	std::cout << std::endl;
 	int cost{ h_k(1, 0) };
 	return get_path(cost);
 }
@@ -72,6 +71,6 @@ Path tsp::held_karp::get_path(int cost)
 		i_mask = visited_mask::sum_masks(i_mask, visited_mask::int_to_mask(index));
 	}
 	path.push_back(0);
-	return Path(path, cost);
+	return Path(path, cost, "DP");
 }
 

@@ -151,25 +151,29 @@ void Menu::algorithm_menu()
 {
 	clear_term();
 	std::string subtitles[] = { "Brute Force", "Branch and Bound - Best First Search",
-		"Branch and Bound - Depth First Search", "Programowanie Dynamiczne", "Powrot" };
+		"Branch and Bound - Depth First Search", "Programowanie Dynamiczne", "Uruchom wszystkie" ,"Powrot" };
 	int choice = 4;
 	bool exit = false;
 	while (!exit)
 	{
-		draw_menu(subtitles, 5, "Algorytmy");
+		draw_menu(subtitles, 6, "Algorytmy");
 		std::cin >> choice;
 		switch (choice)
 		{
 		case 1:
 		{
 			clear_term();
+			std::cout << matrix.to_string();
 			auto brutef{ tsp::brute_force(matrix) };
 			run_algo<tsp::brute_force>(&tsp::brute_force::run, &brutef);
+			getchar();
+			getchar();
 			break;
 		}
 		case 2:
 		{
 			clear_term();
+			std::cout << matrix.to_string();
 			auto bnb{ tsp::branch_n_bound(matrix) };
 			run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::bfs, &bnb);
 			break;
@@ -177,6 +181,7 @@ void Menu::algorithm_menu()
 		case 3:
 		{
 			clear_term();
+			std::cout << matrix.to_string();
 			auto bnb{ tsp::branch_n_bound(matrix) };
 			run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::dfs, &bnb);
 			break;
@@ -184,8 +189,16 @@ void Menu::algorithm_menu()
 		case 4:
 		{
 			clear_term();
+			std::cout << matrix.to_string();
 			auto hk{ tsp::held_karp(matrix) };
 			run_algo<tsp::held_karp>(&tsp::held_karp::run, &hk);
+			break;
+		}
+		case 5:
+		{
+			clear_term();
+			std::cout << matrix.to_string();
+			run_all_algos();
 			break;
 		}
 		default:
@@ -195,6 +208,20 @@ void Menu::algorithm_menu()
 		}
 		}
 	}
+}
+
+void Menu::run_all_algos()
+{
+	auto bf{ tsp::brute_force(matrix) };
+	auto bnb{ tsp::branch_n_bound(matrix) };
+	auto hk{ tsp::held_karp(matrix) };
+
+	run_algo<tsp::brute_force>(&tsp::brute_force::run, &bf);
+	run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::bfs, &bnb);
+	run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::dfs, &bnb);
+	run_algo<tsp::held_karp>(&tsp::held_karp::run, &hk);
+	getchar();
+	getchar();
 }
 
 std::vector<std::vector<int>> Menu::generate_random(int nodes)

@@ -43,6 +43,7 @@ private:
 
 	template<typename T>
 	void run_algo(Path(T::*fnc)(), T* context);
+	void run_all_algos();
 
 	std::vector<std::vector<int>> generate_random(int node);
 };
@@ -51,11 +52,7 @@ template<typename T>
 void Menu::run_algo(Path(T::*fnc)(), T* context)
 {
 	auto t{ Timer<T, Path>(fnc, context) };
-
-	std::cout << matrix.to_string();
 	double time{ t.run() };
 	std::cout << t.get_output().to_string();
-	std::cout << "  Time[ms] >> " << time << std::endl;
-	getchar();
-	getchar();
+	std::cout << "  Time[ms] >> " << time << "\n\n";
 }
