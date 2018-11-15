@@ -36,7 +36,7 @@ std::vector<int>& Adjacency_Matrix::operator[](const int index)
     return a_matrix_.at(index);
 }
 
-int Adjacency_Matrix::size() const
+size_t Adjacency_Matrix::size() const
 {
     return a_matrix_.size();
 }
@@ -82,7 +82,8 @@ bool Adjacency_Matrix::load_from_file(std::fstream& in_file)
 std::vector<int> Adjacency_Matrix::parse_file_input(std::string& line)
 {
 	auto output{ std::vector<int>() };
-	int value{ 0 }, position{ 0 };
+	int value{ 0 };
+	size_t position{ 0 };
 	std::string number;
 
 	for (size_t i{ 0 }; i < line.size();)

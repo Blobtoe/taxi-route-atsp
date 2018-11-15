@@ -14,14 +14,13 @@ public:
     Adjacency_Matrix();
     Adjacency_Matrix(std::vector<std::vector<int>> input);
     Adjacency_Matrix(const std::string& filename);
-    Adjacency_Matrix(const Adjacency_Matrix& rhs) = default;
-    virtual ~Adjacency_Matrix() = default;
+	virtual ~Adjacency_Matrix() = default;
 
     bool operator==(const Adjacency_Matrix& rhs) const;
     bool operator!=(const Adjacency_Matrix& rhs) const;
     std::vector<int>& operator[](const int index);
 
-    int size() const;
+    size_t size() const;
     std::string to_string() const;
     std::vector<std::vector<int>> data() const;
 
@@ -32,7 +31,6 @@ protected:
     std::vector<std::vector<int>> a_matrix_;
 
     void pretty_string(std::string& str_matrix) const;
-    // Returns the amount of spaces needed to justify the matrix.
     int get_spaces(const int number) const;
 
 private:

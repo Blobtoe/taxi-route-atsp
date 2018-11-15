@@ -201,6 +201,20 @@ void Menu::algorithm_menu()
 			run_all_algos();
 			break;
 		}
+		/*case 6:
+		{
+			clear_term();
+			std::cout << "Sample:";
+			int sample{0};
+			std::cin >> sample;
+			std::cout << "Nodes:";
+			int nodes{0};
+			std::cin >> nodes;
+			timing(sample, nodes);
+			getchar();
+			getchar();
+			break;
+		}*/
 		default:
 		{
 			exit = true;
@@ -231,15 +245,34 @@ std::vector<std::vector<int>> Menu::generate_random(int nodes)
 	graph.resize(nodes, std::vector<int>(nodes, 0));
 	for(size_t i{0}; i < graph.size(); ++i)
 	{
-		for(size_t j{i}; j < graph.size(); ++j)
+		for(size_t j{0}; j < graph.size(); ++j)
 		{
-			if (i == j)
-				number = 0;
-			else
-				number = rand() % 70 + 1;
-			graph[i][j] = number;
-			graph[j][i] = number;
+			if (i != j)
+				graph[i][j] = rand() % 100;
 		}
 	}
 	return graph;
 }
+
+/*void Menu::timing(int sample, int nodes)
+{
+	double average_time{ 0 };
+	double time{ 0 };
+	int denied{ 0 };
+	for (int i{ 0 }; i < sample; ++i)
+	{
+		matrix = Adjacency_Matrix( generate_random(nodes));
+		auto bf{ tsp::brute_force(matrix) };
+		auto t{ Timer<tsp::brute_force, Path>(&tsp::brute_force::run, &bf) };
+		time = t.run();
+		average_time += time;
+		if (time > 120000)
+		{
+			std::cout << "\n at " << i << "denied\n";
+			denied++;
+		}
+			
+		//std::cout << "Pomiar: " << i << ", czas[ms]: " << time << std::endl;
+	}
+	std::cout << "Sredni pomiar[ms]: " << average_time / static_cast<double>(sample) << ", odrzucono: " << denied << std::endl;
+}*/

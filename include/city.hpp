@@ -20,13 +20,13 @@ namespace tsp{
         ~City() = default;
 
         int get_bound() const;
-        int get_path_size() const;
+        size_t get_path_size() const;
         int get_index() const;
         Path get_path() const;
         int get_travel_cost(int source, int dest) const;
         std::vector<int> get_neighbours() const;
 
-		// Funktor wykorzystywany w sortowaniu kolejki priorytetowej w algo: branch_n_bound.
+
         struct compare{
             bool operator()(const City& lhs, const City& rhs)
             {

@@ -9,6 +9,7 @@ namespace tsp{
     class brute_force{
 
     public:
+		brute_force() = delete;
 		brute_force(Adjacency_Matrix& matrix);
 
 		Path run();

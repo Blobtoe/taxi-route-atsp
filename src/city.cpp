@@ -27,7 +27,7 @@ namespace tsp{
         return lower_bound_;
     }
 
-    int City::get_path_size() const
+    size_t City::get_path_size() const
     {
         return previous_path_.path_.size();
     }
@@ -52,6 +52,9 @@ namespace tsp{
         return reduction_matrix_.get_neighbours(index_);
     }
 
+	// Funkcja ograniczajaca.
+	// Wypelnia wiersz z indeksem poprzednika 
+	// i kolumne z aktualnym indeksem wartoscia INT_MAX.
     void City::fill_n_reduce()
     {
         reduction_matrix_.fill_passed_nodes(

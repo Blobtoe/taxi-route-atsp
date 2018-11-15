@@ -7,10 +7,9 @@ namespace tsp
 	class held_karp {
 	
 	public:
+
+		held_karp() = delete;
 		held_karp(const Adjacency_Matrix& matrix);
-		held_karp(const held_karp&) = default;
-		held_karp& operator=(const held_karp& d) = default;
-		~held_karp() = default;
 
 		Path run();
 

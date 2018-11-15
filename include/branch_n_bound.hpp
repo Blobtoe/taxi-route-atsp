@@ -17,10 +17,6 @@ namespace tsp{
 		branch_n_bound() = delete;
 		branch_n_bound(const Adjacency_Matrix& matrix);
 
-		branch_n_bound(const branch_n_bound&) = default;
-		branch_n_bound& operator=(const branch_n_bound&) = default;
-		~branch_n_bound() = default;
-
         Path bfs();
         Path dfs();
     

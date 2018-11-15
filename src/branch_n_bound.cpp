@@ -55,7 +55,6 @@ namespace tsp{
         }
     }
 
-	// Dodaje do kolejki wszystkich sąsiadów "parent_city".
     void branch_n_bound::push_child_cities(City& parent_city, branch_n_bound::city_p_queue& city_q)
     {
         int parent_index{ parent_city.get_index() }, travel_cost;

@@ -13,10 +13,8 @@ namespace tsp
         
         Reduction_Matrix(Adjacency_Matrix matrix);
         Reduction_Matrix(std::vector<std::vector<int>> matrix);
-        Reduction_Matrix(const Reduction_Matrix& r_m) = default;
-        Reduction_Matrix& operator=(const Reduction_Matrix& rhs) = default;
         const std::vector<int>& operator[](int index) const;
-        ~Reduction_Matrix() override = default;
+		~Reduction_Matrix() override = default;
 
         void fill_passed_nodes(int row, int column);
         void reduce_matrix();
