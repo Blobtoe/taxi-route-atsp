@@ -20,7 +20,7 @@ void Menu::draw_menu(const std::string subtitles[], size_t size, const std::stri
 
 	draw_title(title, line_len + 7);
 	draw_body(subtitles, size, line_len);
-	std::cout << std::string(line_len + extra_chars, '-') << std::endl;
+	std::cout << std::string(line_len + format_chars, '-') << std::endl;
 	std::cout << "\n Twoj wybor >> ";
 }
 
@@ -60,11 +60,10 @@ void Menu::draw_title(const std::string& title, const unsigned line_len) const
 void Menu::draw_body(const std::string subtitles[], size_t size, const unsigned max_line) const
 {
 	for(size_t i{1}; i <= size; ++i)
-		std::cout << add_extra_chars(subtitles[i-1], i, max_line);
+		std::cout << align_line(subtitles[i-1], i, max_line);
 }
 
-// Adds extra characters and empty spaces to align the last vertical line.
-std::string Menu::add_extra_chars(const std::string& line, const unsigned line_no, const unsigned max_len) const
+std::string Menu::align_line(const std::string& line, const unsigned line_no, const unsigned max_len) const
 {
 	return std::string("| " + std::to_string(line_no) + ") " 
 		+ line + std::string(max_len - line.size(), ' ') + " |\n");
