@@ -2,7 +2,6 @@
 #include "../include/brute_force.hpp"
 #include "../include/timer.hpp"
 #include "../include/timer.hpp"
-
 #include "../include/menu_handler.hpp"
 
 #include <iostream>

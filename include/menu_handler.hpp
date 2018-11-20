@@ -2,6 +2,7 @@
 
 #include "adjacency_matrix.hpp"
 #include "path.hpp"
+#include "timer.hpp"
 
 #include <fstream>
 #include <string>
@@ -38,25 +39,14 @@ private:
 	void get_filename();
 	void display_matrix();
 	void load_from_file(std::string& filename);
+	void wait_for_reaction();
 
 	void algorithm_menu();
 
-	template<typename T>
-	void run_algo(Path(T::*fnc)(), T* context);
+	void run_algo(std::function<Path()> fnc);
 	void run_all_algos();
 
 	std::vector<std::vector<int>> generate_random(int node);
 
-	//void timing(int sample, int nodes);
+	void timing(int sample, int nodes);
 };
-
-template<typename T>
-void Menu::run_algo(Path(T::*fnc)(), T* context)
-{
-	auto t{ Timer<T, Path>(fnc, context) };
-	double time{ t.run() };
-	std::cout << t.get_output().to_string();
-	std::cout << "  Time[ms] >> " << time << "\n\n";
-	getchar();
-	getchar();
-}

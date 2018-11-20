@@ -1,9 +1,6 @@
-﻿#include "..\include\held_karp.hpp"
+﻿#include "../include/held_karp.hpp"
+#include <climits>
 #include <iostream>
-
-// Maska może przyjąć "(1 << matrix.size()) - 1 " wartości.
-// Drugi element w std::pair<int, int> jest indeksem miasta,
-// do którego weszła funkcja zwracająca minimalny koszt.
 
 tsp::held_karp::held_karp(const Adjacency_Matrix& matrix)
 	:	matrix_{ matrix }, 
@@ -31,7 +28,7 @@ void tsp::held_karp::init_matrix()
 // - C(S, i) = min {C(S - {j}, i) + d(j, i)}, gdzie:
 //		- d(j, i) - Dystans między wierzchołkami (j, i) w grafie.
 //		- C(S, i) - Koszt przejścia cyklu hamiltona od i przez wszystkie wierzchołki w S.
-int tsp::held_karp::h_k(visited_mask mask, int city)
+int tsp::held_karp::h_k(bit_mask mask, int city)
 {
 	if (mask == full_mask_)
 		return matrix_[city][0];
@@ -42,10 +39,10 @@ int tsp::held_karp::h_k(visited_mask mask, int city)
 	int current{ INT_MAX };
 	for (int i{0}; i < matrix_.size(); ++i)
 	{
-		auto i_mask{ visited_mask::int_to_mask(i) };
-		if (visited_mask::and_masks(mask, i_mask) == 0)
+		auto i_mask{ bit_mask::int_to_mask(i) };
+		if (bit_mask::and_masks(mask, i_mask) == 0)
 		{
-			current = h_k(visited_mask::sum_masks(mask, i_mask), i) + matrix_[city][i];
+			current = h_k(bit_mask::sum_masks(mask, i_mask), i) + matrix_[city][i];
 
 			if (current < operations_[city][mask.mask_])
 			{
@@ -61,14 +58,14 @@ int tsp::held_karp::h_k(visited_mask mask, int city)
 Path tsp::held_karp::get_path(int cost)
 {
 	std::vector<int> path = { 0 };
-	visited_mask i_mask{ visited_mask::int_to_mask(0) };
+	bit_mask i_mask{ bit_mask::int_to_mask(0) };
 	int index{ 0 };
 
 	while(i_mask != full_mask_)
 	{
 		index = travel_vec_[index][i_mask.mask_];
 		path.push_back(index);
-		i_mask = visited_mask::sum_masks(i_mask, visited_mask::int_to_mask(index));
+		i_mask = bit_mask::sum_masks(i_mask, bit_mask::int_to_mask(index));
 	}
 	path.push_back(0);
 	return Path(path, cost, "DP");

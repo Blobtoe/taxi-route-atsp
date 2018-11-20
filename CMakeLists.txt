@@ -10,12 +10,6 @@ project(tsp
         DESCRIPTION "Asymmetric Travelling Salesman Problem"
         LANGUAGES CXX)     
 
-if (${CMAKE_SIZEOF_VOID_P} EQUAL "8")
-    set (PROJECTNAME_ARCHITECTURE "x64")
-else ()
-    set (PROJECTNAME_ARCHITECTURE "x86")
-endif ()
-
 set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/file_handler.hpp
     ${CMAKE_SOURCE_DIR}/include/held_karp.hpp

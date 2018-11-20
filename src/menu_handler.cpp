@@ -97,7 +97,10 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			case 3:
 			{
 				if(data_loaded)
+				{
 					display_matrix();
+					wait_for_reaction();
+				}
 				break;
 			}
 			case 4:
@@ -126,10 +129,7 @@ void Menu::get_filename()
 void Menu::display_matrix()
 {
 	clear_term();
-	if(data_loaded)
-		std::cout << matrix.to_string();
-	getchar();
-	getchar();
+	std::cout << matrix.to_string();
 }
 
 void Menu::load_from_file(std::string& filename)
@@ -147,6 +147,12 @@ void Menu::load_from_file(std::string& filename)
 	}
 }
 
+void Menu::wait_for_reaction()
+{
+	getchar();
+	getchar();
+}
+
 void Menu::algorithm_menu()
 {
 	clear_term();
@@ -162,59 +168,51 @@ void Menu::algorithm_menu()
 		{
 		case 1:
 		{
-			clear_term();
-			std::cout << matrix.to_string();
+			display_matrix();
 			auto brutef{ tsp::brute_force(matrix) };
-			run_algo<tsp::brute_force>(&tsp::brute_force::run, &brutef);
-			getchar();
-			getchar();
+			run_algo([&brutef](){
+				return brutef.run();
+			});
+			wait_for_reaction();
 			break;
 		}
 		case 2:
 		{
-			clear_term();
-			std::cout << matrix.to_string();
+			display_matrix();
 			auto bnb{ tsp::branch_n_bound(matrix) };
-			run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::bfs, &bnb);
+			run_algo([&bnb](){
+				return bnb.bfs();
+			});
+			wait_for_reaction();
 			break;
 		}
 		case 3:
 		{
-			clear_term();
-			std::cout << matrix.to_string();
+			display_matrix();
 			auto bnb{ tsp::branch_n_bound(matrix) };
-			run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::dfs, &bnb);
+			run_algo([&bnb](){
+				return bnb.dfs(); 
+			});
+			wait_for_reaction();
 			break;
 		}
 		case 4:
 		{
-			clear_term();
-			std::cout << matrix.to_string();
+			display_matrix();
 			auto hk{ tsp::held_karp(matrix) };
-			run_algo<tsp::held_karp>(&tsp::held_karp::run, &hk);
+			run_algo([&hk](){
+				return hk.run();
+			});
+			wait_for_reaction();
 			break;
 		}
 		case 5:
 		{
-			clear_term();
-			std::cout << matrix.to_string();
+			display_matrix();
 			run_all_algos();
+			wait_for_reaction();
 			break;
 		}
-		/*case 6:
-		{
-			clear_term();
-			std::cout << "Sample:";
-			int sample{0};
-			std::cin >> sample;
-			std::cout << "Nodes:";
-			int nodes{0};
-			std::cin >> nodes;
-			timing(sample, nodes);
-			getchar();
-			getchar();
-			break;
-		}*/
 		default:
 		{
 			exit = true;
@@ -224,18 +222,35 @@ void Menu::algorithm_menu()
 	}
 }
 
+void Menu::run_algo(std::function<Path()> fnc)
+{
+	auto t{ Timer<Path>(fnc) };
+	double time{ t.run() };
+	std::cout << t.get_output().to_string();
+	std::cout << "  Time[ms] >> " << time << "\n\n";
+}
+
 void Menu::run_all_algos()
 {
 	auto bf{ tsp::brute_force(matrix) };
 	auto bnb{ tsp::branch_n_bound(matrix) };
 	auto hk{ tsp::held_karp(matrix) };
 
-	run_algo<tsp::brute_force>(&tsp::brute_force::run, &bf);
-	run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::bfs, &bnb);
-	run_algo<tsp::branch_n_bound>(&tsp::branch_n_bound::dfs, &bnb);
-	run_algo<tsp::held_karp>(&tsp::held_karp::run, &hk);
-	getchar();
-	getchar();
+	run_algo([&bf](){
+		return bf.run();
+	});
+
+	run_algo([&bnb](){
+		return bnb.bfs();
+	});
+
+	run_algo([&bnb](){
+		return bnb.dfs();
+	});
+
+	run_algo([&hk](){
+		return hk.run();
+	});
 }
 
 std::vector<std::vector<int>> Menu::generate_random(int nodes)
@@ -254,7 +269,8 @@ std::vector<std::vector<int>> Menu::generate_random(int nodes)
 	return graph;
 }
 
-/*void Menu::timing(int sample, int nodes)
+// Funkcja pomiarowa do sprawozdania
+void Menu::timing(int sample, int nodes)
 {
 	double average_time{ 0 };
 	double time{ 0 };
@@ -262,8 +278,12 @@ std::vector<std::vector<int>> Menu::generate_random(int nodes)
 	for (int i{ 0 }; i < sample; ++i)
 	{
 		matrix = Adjacency_Matrix( generate_random(nodes));
+
 		auto bf{ tsp::brute_force(matrix) };
-		auto t{ Timer<tsp::brute_force, Path>(&tsp::brute_force::run, &bf) };
+		auto t{ Timer<Path>([&bf](){
+			return bf.run();
+		}) };
+
 		time = t.run();
 		average_time += time;
 		if (time > 120000)
@@ -275,4 +295,4 @@ std::vector<std::vector<int>> Menu::generate_random(int nodes)
 		//std::cout << "Pomiar: " << i << ", czas[ms]: " << time << std::endl;
 	}
 	std::cout << "Sredni pomiar[ms]: " << average_time / static_cast<double>(sample) << ", odrzucono: " << denied << std::endl;
-}*/
+}
