@@ -47,7 +47,7 @@ private:
 
 	std::vector<std::vector<int>> generate_random(int node);
 
-	void timing(int sample, int nodes);
+	//void timing(int sample, int nodes);
 };
 
 template<typename T>
@@ -57,4 +57,6 @@ void Menu::run_algo(Path(T::*fnc)(), T* context)
 	double time{ t.run() };
 	std::cout << t.get_output().to_string();
 	std::cout << "  Time[ms] >> " << time << "\n\n";
+	getchar();
+	getchar();
 }
