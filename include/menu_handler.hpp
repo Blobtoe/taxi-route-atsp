@@ -40,11 +40,14 @@ private:
 	void wait_for_reaction();
 
 	void algorithm_menu();
-
 	double run_algo(std::function<Path()> fnc);
 	void run_all_algos();
 
 	void time_menu();
+	void time_bf(int sample, int nodes);
+	void time_bnb_bfs(int sample, int nodes);
+	void time_bnb_dfs(int sample, int nodes);
+	void time_hk(int sample, int nodes);
 
 	std::vector<std::vector<int>> generate_random(int node);
 };

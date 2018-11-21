@@ -35,3 +35,4 @@
 build/
 .dolphin
 .vscode/
+bin/

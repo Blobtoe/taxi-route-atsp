@@ -15,11 +15,11 @@ void Menu::run(const std::string subtitles[], size_t size, const std::string tit
 void Menu::draw_menu(const std::string subtitles[], size_t size, const std::string title) const
 {
 	clear_term();
-
 	int line_len{ longest_subtitle(subtitles, size)};
 
-	draw_title(title, line_len + 7);
+	draw_title(title, line_len + format_chars);
 	draw_body(subtitles, size, line_len);
+
 	std::cout << std::string(line_len + format_chars, '-') << std::endl;
 	std::cout << "\n Twoj wybor >> ";
 }
@@ -164,6 +164,7 @@ void Menu::algorithm_menu()
 		"Branch and Bound - Depth First Search", "Programowanie Dynamiczne", "Uruchom wszystkie" ,"Powrot" };
 	int choice = 4;
 	bool exit = false;
+	double time{ 0.0 };
 	while (!exit)
 	{
 		draw_menu(subtitles, 6, "Algorytmy");
@@ -174,10 +175,10 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto brutef{ tsp::brute_force(matrix) };
-			std::cout << "Time [ms] >> ";
-			std::cout << run_algo([&brutef](){
+			time = run_algo([&brutef](){
 				return brutef.run();
 			});
+			std::cout << "  Time [ms] >> " << time;
 			wait_for_reaction();
 			break;
 		}
@@ -185,10 +186,10 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto bnb{ tsp::branch_n_bound(matrix) };
-			std::cout << "Time [ms] >> ";
-			std::cout << run_algo([&bnb](){
+			time = run_algo([&bnb](){
 				return bnb.best_fs();
 			});
+			std::cout << "  Time [ms] >> " << time;
 			wait_for_reaction();
 			break;
 		}
@@ -196,10 +197,10 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto bnb{ tsp::branch_n_bound(matrix) };
-			std::cout << "Time [ms] >> ";
-			std::cout << run_algo([&bnb](){
+			time = run_algo([&bnb](){
 				return bnb.dfs(); 
 			});
+			std::cout << "  Time [ms] >> " << time;
 			wait_for_reaction();
 			break;
 		}
@@ -207,10 +208,10 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto hk{ tsp::held_karp(matrix) };
-			std::cout << "Time [ms] >> ";
-			std::cout << run_algo([&hk](){
+			time = run_algo([&hk](){
 				return hk.run();
 			});
+			std::cout << "  Time [ms] >> " << time;
 			wait_for_reaction();
 			break;
 		}
@@ -275,27 +276,35 @@ void Menu::time_menu()
 		std::cin >> choice;
 		if(choice < 5)
 		{
-			std::cout << "Liczba pomiarow >> ";
+			std::cout << " Liczba pomiarow >> ";
 			std::cin >> sample;
-			std::cout << "Wielkosc grafu >> ";
+			std::cout << " Wielkosc grafu >> ";
 			std::cin >> nodes;
 		}
 		switch(choice)
 		{
 			case 1:
 			{
+				time_bf(sample, nodes);
+				wait_for_reaction();
 				break;
 			}
 			case 2:
 			{
+				time_bnb_bfs(sample, nodes);
+				wait_for_reaction();
 				break;
 			}
 			case 3:
 			{
+				time_bnb_dfs(sample, nodes);
+				wait_for_reaction();
 				break;
 			}
 			case 4:
 			{
+				time_hk(sample, nodes);
+				wait_for_reaction();
 				break;
 			}
 			default: 
@@ -305,6 +314,94 @@ void Menu::time_menu()
 			}
 		}
 	}
+}
+
+void Menu::time_bf(int sample, int nodes)
+{
+	double average_time{ 0.0 };
+	double time{ 0.0 };
+	int denied{ 0 };
+	for (int i{0} ; i < sample ; ++i)
+	{
+		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
+		auto bf{ tsp::brute_force(graph) };
+		auto t{ Timer<Path>([&bf]() {
+					return bf.run();
+		}) };
+		time = t.run();
+		if (time > 300000)
+			denied++;
+		else
+			average_time += time;
+	}
+	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
+	std::cout << "\n Odrzucono >> " << denied;
+}
+
+void Menu::time_bnb_bfs(int sample, int nodes)
+{
+	double average_time{ 0.0 };
+	double time{ 0.0 };
+	int denied{ 0 };
+	for (int i{ 0 }; i < sample; ++i)
+	{
+		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
+		auto bnb{ tsp::branch_n_bound(graph) };
+		auto t{ Timer<Path>([&bnb]() {
+					return bnb.best_fs();
+		}) };
+		time = t.run();
+		if (time > 300000)
+			denied++;
+		else
+			average_time += time;
+	}
+	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
+	std::cout << "\n Odrzucono >> " << denied;
+}
+
+void Menu::time_bnb_dfs(int sample, int nodes)
+{
+	double average_time{ 0.0 };
+	double time{ 0.0 };
+	int denied{ 0 };
+	for (int i{ 0 }; i < sample; ++i)
+	{
+		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
+		auto bnb{ tsp::branch_n_bound(graph) };
+		auto t{ Timer<Path>([&bnb]() {
+					return bnb.dfs();
+		}) };
+		time = t.run();
+		if (time > 300000)
+			denied++;
+		else
+			average_time += time;
+	}
+	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
+	std::cout << "\n Odrzucono >> " << denied;
+}
+
+void Menu::time_hk(int sample, int nodes)
+{
+	double average_time{ 0.0 };
+	double time{ 0.0 };
+	int denied{ 0 };
+	for (int i{ 0 }; i < sample; ++i)
+	{
+		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
+		auto hk{ tsp::held_karp(graph) };
+		auto t{ Timer<Path>([&hk]() {
+					return hk.run();
+		}) };
+		time = t.run();
+		if (time > 300000)
+			denied++;
+		else
+			average_time += time;
+	}
+	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
+	std::cout << "\n Odrzucono >> " << denied;
 }
 
 std::vector<std::vector<int>> Menu::generate_random(int nodes)
