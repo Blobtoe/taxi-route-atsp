@@ -25,3 +25,8 @@ bool File_Handler::run()
     }
 	return true;
 }
+
+std::string File_Handler::what() const
+{
+	return error_;
+}

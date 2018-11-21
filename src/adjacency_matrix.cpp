@@ -16,7 +16,7 @@ Adjacency_Matrix::Adjacency_Matrix(const std::string& filename)
 {
 	File_Handler f(filename, *this);
 	if(!f.run())
-		throw std::invalid_argument("File couldn't be loaded");
+		throw std::invalid_argument(f.what());
 }
  
 bool Adjacency_Matrix::operator==(const Adjacency_Matrix& rhs) const

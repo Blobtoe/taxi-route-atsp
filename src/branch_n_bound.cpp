@@ -15,15 +15,15 @@ namespace tsp{
 			matrix_[i][i] = INT_MAX;
 	}
 
-    Path branch_n_bound::bfs()
+    Path branch_n_bound::best_fs()
 	{
 		best_bound_ = INT_MAX;
         auto city_q{ city_p_queue() };
         city_q.push(City(0, branch_n_bound::matrix_.data(), 0));
-        return run_bfs(city_q);
+        return run_best_fs(city_q);
     }
 
-    Path branch_n_bound::run_bfs(branch_n_bound::city_p_queue& city_q)
+    Path branch_n_bound::run_best_fs(branch_n_bound::city_p_queue& city_q)
     {
         Path best_path;
 		City current_city;
@@ -33,7 +33,7 @@ namespace tsp{
             city_q.pop();
             handle_city(current_city, city_q, best_path);
         }
-		best_path.algo_name_ = "B&B - BFS";
+		best_path.algo_name_ = "B&B - Best-FS";
         finalize_path(best_path);
         return best_path;
     }

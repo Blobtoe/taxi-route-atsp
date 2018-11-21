@@ -108,6 +108,11 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 					algorithm_menu();
 				break;
 			}
+			case 5:
+			{
+				time_menu();
+				break;
+			}
 			default:
 			{
 				exit = true;
@@ -169,7 +174,8 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto brutef{ tsp::brute_force(matrix) };
-			run_algo([&brutef](){
+			std::cout << "Time [ms] >> ";
+			std::cout << run_algo([&brutef](){
 				return brutef.run();
 			});
 			wait_for_reaction();
@@ -179,8 +185,9 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto bnb{ tsp::branch_n_bound(matrix) };
-			run_algo([&bnb](){
-				return bnb.bfs();
+			std::cout << "Time [ms] >> ";
+			std::cout << run_algo([&bnb](){
+				return bnb.best_fs();
 			});
 			wait_for_reaction();
 			break;
@@ -189,7 +196,8 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto bnb{ tsp::branch_n_bound(matrix) };
-			run_algo([&bnb](){
+			std::cout << "Time [ms] >> ";
+			std::cout << run_algo([&bnb](){
 				return bnb.dfs(); 
 			});
 			wait_for_reaction();
@@ -199,7 +207,8 @@ void Menu::algorithm_menu()
 		{
 			display_matrix();
 			auto hk{ tsp::held_karp(matrix) };
-			run_algo([&hk](){
+			std::cout << "Time [ms] >> ";
+			std::cout << run_algo([&hk](){
 				return hk.run();
 			});
 			wait_for_reaction();
@@ -221,12 +230,12 @@ void Menu::algorithm_menu()
 	}
 }
 
-void Menu::run_algo(std::function<Path()> fnc)
+double Menu::run_algo(std::function<Path()> fnc)
 {
 	auto t{ Timer<Path>(fnc) };
 	double time{ t.run() };
 	std::cout << t.get_output().to_string();
-	std::cout << "  Time[ms] >> " << time << "\n\n";
+	return time;
 }
 
 void Menu::run_all_algos()
@@ -240,7 +249,7 @@ void Menu::run_all_algos()
 	});
 
 	run_algo([&bnb](){
-		return bnb.bfs();
+		return bnb.best_fs();
 	});
 
 	run_algo([&bnb](){
@@ -250,6 +259,52 @@ void Menu::run_all_algos()
 	run_algo([&hk](){
 		return hk.run();
 	});
+}
+
+void Menu::time_menu()
+{
+	std::string subtitles[] = {"Brute Force", "Branch and Bound - Best First Search",
+		"Branch and Bound - Depth First Search", "Programowanie Dynamiczne", "Powrot"};
+	bool exit = false;
+	int choice{5}, sample{0}, nodes{0};
+
+	while(!exit)
+	{
+		clear_term();
+		draw_menu(subtitles, 5, "Pomiary");
+		std::cin >> choice;
+		if(choice < 5)
+		{
+			std::cout << "Liczba pomiarow >> ";
+			std::cin >> sample;
+			std::cout << "Wielkosc grafu >> ";
+			std::cin >> nodes;
+		}
+		switch(choice)
+		{
+			case 1:
+			{
+				break;
+			}
+			case 2:
+			{
+				break;
+			}
+			case 3:
+			{
+				break;
+			}
+			case 4:
+			{
+				break;
+			}
+			default: 
+			{
+				exit = true;
+				break;
+			}
+		}
+	}
 }
 
 std::vector<std::vector<int>> Menu::generate_random(int nodes)
@@ -266,32 +321,4 @@ std::vector<std::vector<int>> Menu::generate_random(int nodes)
 		}
 	}
 	return graph;
-}
-
-// Funkcja pomiarowa do sprawozdania
-void Menu::timing(int sample, int nodes)
-{
-	double average_time{ 0 };
-	double time{ 0 };
-	int denied{ 0 };
-	for (int i{ 0 }; i < sample; ++i)
-	{
-		matrix = Adjacency_Matrix( generate_random(nodes));
-
-		auto bf{ tsp::brute_force(matrix) };
-		auto t{ Timer<Path>([&bf](){
-			return bf.run();
-		}) };
-
-		time = t.run();
-		average_time += time;
-		if (time > 120000)
-		{
-			std::cout << "\n at " << i << "denied\n";
-			denied++;
-		}
-			
-		//std::cout << "Pomiar: " << i << ", czas[ms]: " << time << std::endl;
-	}
-	std::cout << "Sredni pomiar[ms]: " << average_time / static_cast<double>(sample) << ", odrzucono: " << denied << std::endl;
 }

@@ -17,6 +17,7 @@ public:
     ~File_Handler() = default;
 
     bool run();
+    std::string what() const;
 
 private:
     Adjacency_Matrix& matrix_;

@@ -17,7 +17,7 @@ namespace tsp{
 		branch_n_bound() = delete;
 		branch_n_bound(const Adjacency_Matrix& matrix);
 
-        Path bfs();
+        Path best_fs();
         Path dfs();
     
     private:
@@ -25,7 +25,7 @@ namespace tsp{
         int best_bound_;
 
         void init_matrix();
-        Path run_bfs(city_p_queue& city_q);
+        Path run_best_fs(city_p_queue& city_q);
         void handle_city(City& city, branch_n_bound::city_p_queue& city_, Path& best_path);
         void push_child_cities(City& parent_city, city_p_queue& city_q);
         void update_best_bound(City& city, Path& best_path);

@@ -41,10 +41,10 @@ private:
 
 	void algorithm_menu();
 
-	void run_algo(std::function<Path()> fnc);
+	double run_algo(std::function<Path()> fnc);
 	void run_all_algos();
 
-	std::vector<std::vector<int>> generate_random(int node);
+	void time_menu();
 
-	void timing(int sample, int nodes);
+	std::vector<std::vector<int>> generate_random(int node);
 };
