@@ -55,6 +55,7 @@ namespace tsp{
 	// Funkcja ograniczajaca.
 	// Wypelnia wiersz z indeksem poprzednika 
 	// i kolumne z aktualnym indeksem wartoscia INT_MAX.
+    // Nastepnie uruchamia redukcje macierzy.
     void City::fill_n_reduce()
     {
         reduction_matrix_.fill_passed_nodes(

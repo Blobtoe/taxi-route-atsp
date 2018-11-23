@@ -42,7 +42,7 @@ namespace tsp
 		std::vector<std::vector<int>> travel_vec_;
 		bit_mask full_mask_;
 
-		void init_matrix();
+		void remove_loops();
 		int h_k(bit_mask mask, int city);
 
 		Path get_path(int cost);

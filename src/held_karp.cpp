@@ -12,22 +12,17 @@ tsp::held_karp::held_karp(const Adjacency_Matrix& matrix)
 
 Path tsp::held_karp::run()
 {
-	init_matrix();
+	remove_loops();
 	int cost{ h_k(1, 0) };
 	return get_path(cost);
 }
 
-// Zablokowanie możliwości stworzenia pętli w wyniku.
-void tsp::held_karp::init_matrix()
+void tsp::held_karp::remove_loops()
 {
 	for (int i{ 0 }; i < matrix_.size(); ++i)
 		matrix_[i][i] = INT_MAX;
 }
 
-// Główna rekurencja działająca według wzoru:
-// - C(S, i) = min {C(S - {j}, i) + d(j, i)}, gdzie:
-//		- d(j, i) - Dystans między wierzchołkami (j, i) w grafie.
-//		- C(S, i) - Koszt przejścia cyklu hamiltona od i przez wszystkie wierzchołki w S.
 int tsp::held_karp::h_k(bit_mask mask, int city)
 {
 	if (mask == full_mask_)
@@ -54,7 +49,6 @@ int tsp::held_karp::h_k(bit_mask mask, int city)
 	return operations_[city][mask.mask_];
 }
 
-// Przejście po kolejnych maskach w celu odtworzenia minimalnej ścieżki.
 Path tsp::held_karp::get_path(int cost)
 {
 	std::vector<int> path = { 0 };

@@ -50,4 +50,5 @@ private:
 	void time_hk(int sample, int nodes);
 
 	std::vector<std::vector<int>> generate_random(int node);
+	std::vector<int> generate_row(std::vector<int>& row);
 };

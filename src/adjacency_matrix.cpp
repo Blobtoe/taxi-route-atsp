@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <sstream>
 
 Adjacency_Matrix::Adjacency_Matrix()
 {}
@@ -44,16 +45,41 @@ size_t Adjacency_Matrix::size() const
 std::string Adjacency_Matrix::to_string() const
 {
 	auto output{ std::string() };
+	int most_digits{ find_longest_number() };
+	rows_to_string(output, most_digits);
+	pretty_string(output);
+	return output;
+}
+
+int Adjacency_Matrix::find_longest_number() const
+{
+	int most_digits{0}, digits;
+	for(auto& rows: a_matrix_)
+	{
+		for(auto& cols: rows)
+		{
+			if( (digits = get_digits(cols)) > most_digits )
+				most_digits = digits;
+		}
+	}
+	return most_digits;
+}
+
+void Adjacency_Matrix::rows_to_string(std::string& output, int most_digits) const
+{
 	for(auto& rows: a_matrix_)
 	{
 		output += "| ";
-		for(auto& cols: rows)
-			output += std::string(3 - get_spaces(cols),' ') 
-					+ std::to_string(cols) + " ";
+		cols_to_string(output, rows, most_digits);
 		output += "|\n";
 	}
-	pretty_string(output);
-	return output;
+}
+
+void Adjacency_Matrix::cols_to_string(std::string& output, const std::vector<int>& row, int most_digits) const
+{
+	for(auto& cols: row)
+		output += std::string(most_digits - get_digits(cols),' ') 
+				+ std::to_string(cols) + " ";
 }
 
 std::vector<std::vector<int>> Adjacency_Matrix::data() const
@@ -63,12 +89,9 @@ std::vector<std::vector<int>> Adjacency_Matrix::data() const
 
 bool Adjacency_Matrix::load_from_file(std::fstream& in_file)
 {
-    std::string line;
     try
     {
-		std::getline(in_file, line); // Skip the number of cities
-        while(std::getline(in_file, line))
-			a_matrix_.push_back( parse_file_input(line) );
+		load_data(in_file);
     }
     catch(std::ifstream::failure& )
     {
@@ -78,25 +101,42 @@ bool Adjacency_Matrix::load_from_file(std::fstream& in_file)
 	return true;
 }
 
-// Dostając jedną linię z pliku, konwertuje każdą z wag i dodaje do macierzy.
-std::vector<int> Adjacency_Matrix::parse_file_input(std::string& line)
+void Adjacency_Matrix::load_data(std::fstream& file)
+{
+	std::string line;
+	std::getline(file, line);
+	resize_matrix( parse_size_input(line) );
+	for(auto& rows : a_matrix_)
+	{
+		std::getline(file, line);
+		if(!file.eof())
+			rows = line_to_vec(line);
+	}
+}
+
+size_t Adjacency_Matrix::parse_size_input(std::string& size_input)
+{
+	size_t size;
+	auto iss{ std::istringstream(size_input)};
+	iss >> size;
+	if(iss.fail())
+		size = 0;
+	return size;
+}
+
+void Adjacency_Matrix::resize_matrix(size_t size)
+{
+	a_matrix_.resize(size, std::vector<int>(size));
+}
+
+std::vector<int> Adjacency_Matrix::line_to_vec(std::string& line)
 {
 	auto output{ std::vector<int>() };
-	int value{ 0 };
-	size_t position{ 0 };
-	std::string number;
-
-	for (size_t i{ 0 }; i < line.size();)
-	{
-		position = line.find(" ", i);
-
-		if (position == std::string::npos)
-			position = line.size() - 1;
-
-		value = std::stoi(line.substr(i, position));
+	std::stringstream iss(line);
+	int value;
+	while(iss >> value)
 		output.push_back(value);
-		i = position + 1;
-	}
+	
 	return output;
 }
 
@@ -108,15 +148,15 @@ void Adjacency_Matrix::pretty_string(std::string& str_matrix) const
 	str_matrix.append(dashes);
 }
 
-int Adjacency_Matrix::get_spaces(const int number) const
+int Adjacency_Matrix::get_digits(const int number) const
 {
 	if(number == 0)
 		return 1;
+
 	auto pos_number{ abs(number) };
-	auto digits{(int) log10((double) pos_number) + 1};
-	if(number < 0)
-		digits++;
-	return digits;
+	auto digits{( log10((pos_number)) + 1 )};
+
+	return number < 0 ? digits++ : digits;
 }
 
 std::vector<int> Adjacency_Matrix::get_neighbours(int node) const

@@ -30,11 +30,17 @@ protected:
 
     std::vector<std::vector<int>> a_matrix_;
 
+    int find_longest_number() const;
+    void rows_to_string(std::string& output, int most_digits) const;
+    void cols_to_string(std::string& output, const std::vector<int>& row, int most_digits) const;
     void pretty_string(std::string& str_matrix) const;
-    int get_spaces(const int number) const;
+    int get_digits(const int number) const;
 
 private:
 
     bool load_from_file(std::fstream& file);
-    std::vector<int> parse_file_input(std::string& line);
+    void load_data(std::fstream& file);
+    size_t parse_size_input(std::string& size);
+    void resize_matrix(size_t size);
+    std::vector<int> line_to_vec(std::string& line);
 };

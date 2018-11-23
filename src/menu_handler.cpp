@@ -21,7 +21,7 @@ void Menu::draw_menu(const std::string subtitles[], size_t size, const std::stri
 	draw_body(subtitles, size, line_len);
 
 	std::cout << std::string(line_len + format_chars, '-') << std::endl;
-	std::cout << "\n Twoj wybor >> ";
+	std::cout << "\n Your choice >> ";
 }
 
 void Menu::clear_term() const
@@ -87,10 +87,10 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 			case 2:
 			{
 				int amount{ 0 };
-				std::cout << " Podaj ilosc wierzcholkow >> ";
+				std::cout << " Enter the amount of nodes >> ";
 				std::cin >> amount;
-				matrix = Adjacency_Matrix(generate_random(amount));
-				data_loaded = true;
+				//matrix = Adjacency_Matrix(generate_random(amount));
+				//data_loaded = true;
 				break;
 			}
 			case 3:
@@ -108,11 +108,6 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 					algorithm_menu();
 				break;
 			}
-			case 5:
-			{
-				time_menu();
-				break;
-			}
 			default:
 			{
 				exit = true;
@@ -125,7 +120,7 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 void Menu::get_filename()
 {
 	std::string filename;
-	std::cout << " Podaj nazwe pliku >> ";
+	std::cout << " Enter the path to a file >> ";
 	std::cin >> filename;
 	load_from_file(filename);
 }
@@ -144,7 +139,7 @@ void Menu::load_from_file(std::string& filename)
 	}
 	catch(const std::invalid_argument&)
 	{
-		std::cout << "\n Podano nieprawidlowy plik.";
+		std::cout << "\n Error: Incorrect path to a file.";
 		getchar();	// get rid of the trailing newline
 		getchar();
 		clear_term();
@@ -161,13 +156,13 @@ void Menu::algorithm_menu()
 {
 	clear_term();
 	std::string subtitles[] = { "Brute Force", "Branch and Bound - Best First Search",
-		"Branch and Bound - Depth First Search", "Programowanie Dynamiczne", "Uruchom wszystkie" ,"Powrot" };
+		"Branch and Bound - Depth First Search", "Dynamic Programming", "Run all" ,"Back" };
 	int choice = 4;
 	bool exit = false;
 	double time{ 0.0 };
 	while (!exit)
 	{
-		draw_menu(subtitles, 6, "Algorytmy");
+		draw_menu(subtitles, 6, "Algorithms");
 		std::cin >> choice;
 		switch (choice)
 		{
@@ -178,7 +173,7 @@ void Menu::algorithm_menu()
 			time = run_algo([&brutef](){
 				return brutef.run();
 			});
-			std::cout << "  Time [ms] >> " << time;
+			std::cout << "  Time [ms] >> " << time << std::endl;
 			wait_for_reaction();
 			break;
 		}
@@ -244,178 +239,26 @@ void Menu::run_all_algos()
 	auto bf{ tsp::brute_force(matrix) };
 	auto bnb{ tsp::branch_n_bound(matrix) };
 	auto hk{ tsp::held_karp(matrix) };
+	
+	double time{0.0};
 
-	run_algo([&bf](){
+	time = run_algo([&bf](){
 		return bf.run();
 	});
-
-	run_algo([&bnb](){
+	std::cout << "  Time[ms] >> " << time << "\n\n";
+	
+	time = run_algo([&bnb](){
 		return bnb.best_fs();
 	});
-
-	run_algo([&bnb](){
+	std::cout << "  Time[ms] >> " << time << "\n\n";
+	
+	time = run_algo([&bnb](){
 		return bnb.dfs();
 	});
-
-	run_algo([&hk](){
+	std::cout << "  Time[ms] >> " << time << "\n\n";
+	
+	time = run_algo([&hk](){
 		return hk.run();
 	});
-}
-
-void Menu::time_menu()
-{
-	std::string subtitles[] = {"Brute Force", "Branch and Bound - Best First Search",
-		"Branch and Bound - Depth First Search", "Programowanie Dynamiczne", "Powrot"};
-	bool exit = false;
-	int choice{5}, sample{0}, nodes{0};
-
-	while(!exit)
-	{
-		clear_term();
-		draw_menu(subtitles, 5, "Pomiary");
-		std::cin >> choice;
-		if(choice < 5)
-		{
-			std::cout << " Liczba pomiarow >> ";
-			std::cin >> sample;
-			std::cout << " Wielkosc grafu >> ";
-			std::cin >> nodes;
-		}
-		switch(choice)
-		{
-			case 1:
-			{
-				time_bf(sample, nodes);
-				wait_for_reaction();
-				break;
-			}
-			case 2:
-			{
-				time_bnb_bfs(sample, nodes);
-				wait_for_reaction();
-				break;
-			}
-			case 3:
-			{
-				time_bnb_dfs(sample, nodes);
-				wait_for_reaction();
-				break;
-			}
-			case 4:
-			{
-				time_hk(sample, nodes);
-				wait_for_reaction();
-				break;
-			}
-			default: 
-			{
-				exit = true;
-				break;
-			}
-		}
-	}
-}
-
-void Menu::time_bf(int sample, int nodes)
-{
-	double average_time{ 0.0 };
-	double time{ 0.0 };
-	int denied{ 0 };
-	for (int i{0} ; i < sample ; ++i)
-	{
-		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
-		auto bf{ tsp::brute_force(graph) };
-		auto t{ Timer<Path>([&bf]() {
-					return bf.run();
-		}) };
-		time = t.run();
-		if (time > 300000)
-			denied++;
-		else
-			average_time += time;
-	}
-	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
-	std::cout << "\n Odrzucono >> " << denied;
-}
-
-void Menu::time_bnb_bfs(int sample, int nodes)
-{
-	double average_time{ 0.0 };
-	double time{ 0.0 };
-	int denied{ 0 };
-	for (int i{ 0 }; i < sample; ++i)
-	{
-		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
-		auto bnb{ tsp::branch_n_bound(graph) };
-		auto t{ Timer<Path>([&bnb]() {
-					return bnb.best_fs();
-		}) };
-		time = t.run();
-		if (time > 300000)
-			denied++;
-		else
-			average_time += time;
-	}
-	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
-	std::cout << "\n Odrzucono >> " << denied;
-}
-
-void Menu::time_bnb_dfs(int sample, int nodes)
-{
-	double average_time{ 0.0 };
-	double time{ 0.0 };
-	int denied{ 0 };
-	for (int i{ 0 }; i < sample; ++i)
-	{
-		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
-		auto bnb{ tsp::branch_n_bound(graph) };
-		auto t{ Timer<Path>([&bnb]() {
-					return bnb.dfs();
-		}) };
-		time = t.run();
-		if (time > 300000)
-			denied++;
-		else
-			average_time += time;
-	}
-	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
-	std::cout << "\n Odrzucono >> " << denied;
-}
-
-void Menu::time_hk(int sample, int nodes)
-{
-	double average_time{ 0.0 };
-	double time{ 0.0 };
-	int denied{ 0 };
-	for (int i{ 0 }; i < sample; ++i)
-	{
-		auto graph{ Adjacency_Matrix(generate_random(nodes)) };
-		auto hk{ tsp::held_karp(graph) };
-		auto t{ Timer<Path>([&hk]() {
-					return hk.run();
-		}) };
-		time = t.run();
-		if (time > 300000)
-			denied++;
-		else
-			average_time += time;
-	}
-	std::cout << "\n Sredni czas wykonania [ms] >> " << average_time / static_cast<double>(sample);
-	std::cout << "\n Odrzucono >> " << denied;
-}
-
-std::vector<std::vector<int>> Menu::generate_random(int nodes)
-{
-	int number{0};
-	std::vector<std::vector<int>> graph;
-	graph.resize(nodes, std::vector<int>(nodes, 0));
-	for(size_t i{0}; i < graph.size(); ++i)
-	{
-		for(size_t j{0}; j < graph.size(); ++j)
-		{
-			if (i != j)
-				graph[i][j] = rand() % 100;
-		}
-	}
-	return graph;
+	std::cout << "  Time[ms] >> " << time << "\n\n";
 }
