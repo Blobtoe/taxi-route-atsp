@@ -11,6 +11,7 @@ class Adjacency_Matrix{
 friend class File_Handler;
 
 public:
+
     Adjacency_Matrix();
     Adjacency_Matrix(std::vector<std::vector<int>> input);
     Adjacency_Matrix(const std::string& filename);

@@ -15,47 +15,59 @@ namespace tsp{
 			matrix_[i][i] = INT_MAX;
 	}
 
+    Path branch_n_bound::dfs()
+    {
+		best_bound_ = INT_MAX;
+        std::shared_ptr<Container> container{ new Stack(std::stack<City>()) };
+        container->push(City(0, branch_n_bound::matrix_.data(), 0));
+        Path best_path;
+        best_path.algo_name_ = "B&B - DFS";
+        return run(container, best_path);
+    }
+
     Path branch_n_bound::best_fs()
 	{
 		best_bound_ = INT_MAX;
-        auto city_q{ city_p_queue() };
-        city_q.push(City(0, branch_n_bound::matrix_.data(), 0));
-        return run_best_fs(city_q);
+        std::shared_ptr<Container> container{ new Priority_Queue(city_p_queue()) };
+        container->push(City(0, branch_n_bound::matrix_.data(), 0));
+        Path best_path;
+        best_path.algo_name_ = "B&B - Best-FS";
+        return run(container, best_path);
     }
 
-    Path branch_n_bound::run_best_fs(branch_n_bound::city_p_queue& city_q)
+    Path branch_n_bound::run(std::shared_ptr<Container> container, Path& best_path)
     {
-        Path best_path;
 		City current_city;
-        while(!city_q.empty())
+        while(!container->empty())
         {
-            current_city = city_q.top();
-            city_q.pop();
-            handle_city(current_city, city_q, best_path);
+            current_city = container->top();
+            container->pop();
+            handle_city(current_city, container, best_path);
         }
-		best_path.algo_name_ = "B&B - Best-FS";
         finalize_path(best_path);
         return best_path;
     }
 	
-    void branch_n_bound::handle_city(City& city, branch_n_bound::city_p_queue& city_q, Path& best_path)
+    void branch_n_bound::handle_city(City& city, std::shared_ptr<Container> container, Path& best_path)
     {
         if(city.get_path_size() == matrix_.size())
             update_best_bound(city, best_path);
         else if(city.get_bound() < best_bound_)  
-            push_child_cities(city, city_q);
+            push_child_cities(city, container);
     }
 
     void branch_n_bound::update_best_bound(City& city, Path& best_path)
     {
         if(city.get_bound() < best_bound_)
         {
+            std::string algo_name{ best_path.algo_name_ };
             best_bound_ = city.get_bound();
             best_path = city.get_path();
+            best_path.algo_name_ = algo_name;
         }
     }
 
-    void branch_n_bound::push_child_cities(City& parent_city, branch_n_bound::city_p_queue& city_q)
+    void branch_n_bound::push_child_cities(City& parent_city, std::shared_ptr<Container> container)
     {
         int parent_index{ parent_city.get_index() }, travel_cost;
         std::vector<int> neighbours{ parent_city.get_neighbours() };
@@ -63,7 +75,7 @@ namespace tsp{
         for(auto& neighbour: neighbours)
         {
             travel_cost = parent_city.get_travel_cost(parent_index, neighbour);
-            city_q.push(
+            container->push(
                 City(parent_city, neighbour, travel_cost));
         }
     }
@@ -81,44 +93,5 @@ namespace tsp{
             travel_c += matrix_[path.path_[i]][path.path_[i+1]];
             
         path.cost_ = travel_c;
-    }
-
-    Path branch_n_bound::dfs()
-    {
-		best_bound_ = INT_MAX;
-        auto city_s{ std::stack<City>() };
-        city_s.push(City(0, branch_n_bound::matrix_.data(), 0));
-        return run_dfs(city_s);
-    }
-
-    Path branch_n_bound::run_dfs(std::stack<City>& city_s)
-    {
-        Path best_path;
-        while(!city_s.empty())
-        {
-            City current_city{ city_s.top() };
-            city_s.pop();
-
-            if(current_city.get_path_size() == matrix_.size())
-                update_best_bound(current_city, best_path);
-            else if(current_city.get_bound() <= best_bound_)
-                push_child_cities(current_city, city_s);
-        }
-		best_path.algo_name_ = "B&B - DFS";
-        finalize_path(best_path);
-        return best_path;
-    }
-
-    void branch_n_bound::push_child_cities(City& parent_city, std::stack<City>& city_s)
-    {
-        int parent_index{ parent_city.get_index() }, travel_cost;
-        std::vector<int> neighbours{ parent_city.get_neighbours() };
-
-        for(auto& neighbour: neighbours)
-        {
-            travel_cost = parent_city.get_travel_cost(parent_index, neighbour);
-            city_s.push(
-                City(parent_city, neighbour, travel_cost));
-        }
     }
 }
