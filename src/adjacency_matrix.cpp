@@ -19,6 +19,12 @@ Adjacency_Matrix::Adjacency_Matrix(const std::string& filename)
 	if(!f.run())
 		throw std::invalid_argument(f.what());
 }
+
+Adjacency_Matrix::Adjacency_Matrix(const size_t nodes)
+	: a_matrix_{ std::vector<std::vector<int>>(nodes, std::vector<int>(nodes)) }
+{
+	fill_with_random();
+}
  
 bool Adjacency_Matrix::operator==(const Adjacency_Matrix& rhs) const
 {
@@ -87,13 +93,29 @@ std::vector<std::vector<int>> Adjacency_Matrix::data() const
 	return a_matrix_;
 }
 
+void Adjacency_Matrix::fill_with_random()
+{
+	std::generate(a_matrix_.begin(), a_matrix_.end(), [this](){
+		return get_random_row();
+	});
+}
+
+std::vector<int> Adjacency_Matrix::get_random_row()
+{
+	auto output{ std::vector<int>(a_matrix_.size()) };
+	std::transform(output.begin(), output.end(), output.begin(), [](int node){
+		return rand() % 100;
+	});
+	return output;
+}
+
 bool Adjacency_Matrix::load_from_file(std::fstream& in_file)
 {
     try
     {
 		load_data(in_file);
     }
-    catch(std::ifstream::failure& )
+    catch(const std::ifstream::failure& )
     {
         if(!in_file.eof())
 			throw;

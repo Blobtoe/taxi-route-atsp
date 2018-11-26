@@ -15,6 +15,7 @@ public:
     Adjacency_Matrix();
     Adjacency_Matrix(std::vector<std::vector<int>> input);
     Adjacency_Matrix(const std::string& filename);
+    Adjacency_Matrix(const size_t nodes);
 	virtual ~Adjacency_Matrix() = default;
 
     bool operator==(const Adjacency_Matrix& rhs) const;
@@ -39,6 +40,8 @@ protected:
 
 private:
 
+    void fill_with_random();
+    std::vector<int> get_random_row();
     bool load_from_file(std::fstream& file);
     void load_data(std::fstream& file);
     size_t parse_size_input(std::string& size);

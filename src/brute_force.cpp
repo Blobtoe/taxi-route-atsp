@@ -24,8 +24,6 @@ namespace tsp{
 		perms[perms.size() - 1] = 0;
     }
 
-	// Permutuje indeksy w wektorze.
-	// Po uzyskaniu jednej pełnej permutacji sprawdza, czy ta ścieżka jest lepsza od aktualnej najlepszej.
     void brute_force::permutate(std::vector<int>& perms, int begin, int end, Path& p)
     {
 		if (begin == end)
@@ -51,7 +49,6 @@ namespace tsp{
         }
     }
 
-	// Zwraca koszt przejścia przez miasta o indeksach zawartych w "perms".
     int brute_force::get_cost(const std::vector<int>& perms)
     {
         int acc_cost{0};
