@@ -33,6 +33,6 @@ namespace tsp{
         void push_child_cities(City& parent_city, std::shared_ptr<Container> container);
         void update_best_bound(City& city, Path& best_path);
         void finalize_path(Path& best_path);
-        void calc_travel_cost(Path& path);
+        void calc_travel_cost(Path& path); 
     };
 }
