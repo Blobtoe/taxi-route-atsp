@@ -19,7 +19,17 @@ The program was implemented as a cross-platform console application. In order to
 
 	` $ cmake -G "MinGW Makefiles" ..`
 6. In order to check the generators available on your platform run `$ cmake --help`.
-## Algorithm overview
+
+The directory - **data** contains text files with example matrices which could be used to test the algorithms. You can introduce new files , however they have to follow the format represented below:
+```
+4 			# Number of nodes in the first line.
+5 4 3 9		# Consecutive rows of an adjacency matrix.
+1 4 3 2
+8 7 4 3
+9 0 8 7
+```
+Additionally, there is an option within the program to generate a random asymmetric graph with a specified amount of nodes.
+## Overview of the algorithms
 ### Brute-Force
 Time complexity: O(n!) or O((n-1)!) if the starting node has been predetermined.
 
