@@ -22,7 +22,7 @@ The program was implemented as a cross-platform console application. In order to
 
 The directory - **data** contains text files with example matrices which could be used to test the algorithms. You can introduce new files , however they have to follow the format represented below:
 ```
-4 			# Number of nodes in the first line.
+4 		# Number of nodes in the first line.
 5 4 3 9		# Consecutive rows of an adjacency matrix.
 1 4 3 2
 8 7 4 3
