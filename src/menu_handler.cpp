@@ -89,8 +89,8 @@ void Menu::handle_input(const std::string subtitles[], size_t size, std::string 
 				int amount{ 0 };
 				std::cout << " Enter the amount of nodes >> ";
 				std::cin >> amount;
-				//matrix = Adjacency_Matrix(generate_random(amount));
-				//data_loaded = true;
+				matrix = Adjacency_Matrix(amount);
+				data_loaded = true;
 				break;
 			}
 			case 3:
