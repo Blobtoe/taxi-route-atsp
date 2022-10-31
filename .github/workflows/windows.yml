@@ -15,11 +15,11 @@ jobs:
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
       
-     - name: Download curl
-       uses: schmiddim/action-wget-unzip@v2
-       with:
-       url: https://curl.se/windows/latest.cgi?p=win64-mingw.zip
-         destination: ${{runner.workspace}}/build/curl
+    - name: Download curl
+      uses: schmiddim/action-wget-unzip@v2
+      with:
+        url: https://curl.se/windows/latest.cgi?p=win64-mingw.zip
+        destination: ${{runner.workspace}}/build/curl
 
     - name: Configure CMake
       working-directory: ${{runner.workspace}}/build
