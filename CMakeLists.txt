@@ -14,7 +14,6 @@ set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/file_handler.hpp
     ${CMAKE_SOURCE_DIR}/include/held_karp.hpp
     ${CMAKE_SOURCE_DIR}/include/timer.hpp
-    ${CMAKE_SOURCE_DIR}/include/menu_handler.hpp
     ${CMAKE_SOURCE_DIR}/include/adjacency_matrix.hpp
     "${CMAKE_SOURCE_DIR}/include/path.hpp"
     ${CMAKE_SOURCE_DIR}/include/city.hpp
@@ -26,7 +25,6 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/main.cpp
     ${CMAKE_SOURCE_DIR}/src/held_karp.cpp
     ${CMAKE_SOURCE_DIR}/src/file_handler.cpp
-    ${CMAKE_SOURCE_DIR}/src/menu_handler.cpp
     ${CMAKE_SOURCE_DIR}/src/adjacency_matrix.cpp
     "${CMAKE_SOURCE_DIR}/src/path.cpp"
     ${CMAKE_SOURCE_DIR}/src/city.cpp
@@ -34,7 +32,10 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/brute_force.cpp
     ${CMAKE_SOURCE_DIR}/src/branch_n_bound.cpp)
 
+find_package(CURL REQUIRED) 
 add_executable(tsp ${SOURCES} ${HEADERS})
+include_directories(${CURL_INCLUDE_DIR})
+target_link_libraries(tsp ${CURL_LIBRARIES})
 
 set_target_properties(tsp PROPERTIES
-        CXX_STANDARD 17)  
+        CXX_STANDARD 17)
