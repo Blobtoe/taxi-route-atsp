@@ -14,18 +14,18 @@ jobs:
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
-      
-    - name: Download curl
-      uses: schmiddim/action-wget-unzip@v2
-      with:
-        url: https://curl.se/windows/latest.cgi?p=win64-mingw.zip
-        destination: ${{runner.workspace}}/build/curl
 
     - name: Configure CMake
       working-directory: ${{runner.workspace}}/build
-      run: cmake -DCURL_LIBRARY=".\curl\bin\libcurl-x64.dll" -DCURL_INCLUDE_DIR=".\curl\include\" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} "$Env:GITHUB_WORKSPACE"
+      run: cmake -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} "$Env:GITHUB_WORKSPACE"
     
     - name: Build
       # Build your program with the given configuration
       run: cmake --build . --config $BUILD_TYPE
+      
+    - name: Upload Build
+      uses: actions/upload-artifact@v3
+      with:
+          name: latest
+          path: ${{runner.workspace}}/build/Release/atsp_taxi.exe
       
