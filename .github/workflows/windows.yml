@@ -26,6 +26,6 @@ jobs:
     - name: Upload Build
       uses: actions/upload-artifact@v3
       with:
-          name: latest
+          name: atsp_taxi.exe
           path: ${{runner.workspace}}\build\${{env.BUILD_TYPE}}\atsp_taxi.exe
       
