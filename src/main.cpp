@@ -1,3 +1,13 @@
+#ifdef _WIN32
+    #include <urlmon.h>
+    #pragma comment(lib,"urlmon.lib")
+#else
+    #include <curl/curl.h>
+#endif
+
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "../include/adjacency_matrix.hpp"
 #include "../include/timer.hpp"
 #include "../include/brute_force.hpp"
@@ -7,9 +17,8 @@
 #include <time.h>
 #include <algorithm>
 #include <climits>
-#include <iostream>
 #include <string>
-#include <curl/curl.h>
+
 
 #define earthRadiusKm 6371.0 // radius of the earth in km
 
@@ -32,9 +41,17 @@ double distanceEarth(std::pair<double, double> point1, std::pair<double, double>
   return 2.0 * earthRadiusKm * asin(sqrt(u * u + cos(lat1r) * cos(lat2r) * v * v)) * 1000;
 }
 
+#ifdef _WIN32
+    bool download_jpeg(const char* url) {
+        HRESULT hr = URLDownloadToFile(0, LPCTSTR(url), LPCTSTR("solution.jpg"), 0 , NULL);
+        if (hr == S_OK) {
+            return true;
+        }
+        return false;
+    }
+#else
 // thanks stackoverflow (https://stackoverflow.com/questions/36702888/download-an-image-from-an-url-using-curl-in-c)
-size_t callbackfunction(void *ptr, size_t size, size_t nmemb, void* userdata)
-{
+size_t callbackfunction(void *ptr, size_t size, size_t nmemb, void* userdata) {
     FILE* stream = (FILE*)userdata;
     if (!stream)
     {
@@ -46,15 +63,13 @@ size_t callbackfunction(void *ptr, size_t size, size_t nmemb, void* userdata)
     return written;
 }
 
-bool download_jpeg(const char* url)
-{
+bool download_jpeg(const char* url) {
     FILE* fp = fopen("solution.jpg", "wb");
     if (!fp)
     {
         printf("!!! Failed to create file on the disk\n");
         return false;
     }
-
     CURL* curlCtx = curl_easy_init();
     curl_easy_setopt(curlCtx, CURLOPT_URL, url);
     curl_easy_setopt(curlCtx, CURLOPT_WRITEDATA, fp);
@@ -82,6 +97,7 @@ bool download_jpeg(const char* url)
 
     return true;
 }
+#endif
 
 class Route {
     public:
@@ -240,7 +256,7 @@ int main(int argc, char *argv[])
     nh::json j = solution;
     std::ofstream fout;
     fout.open("solution.json");
-    fout << j;
+    fout << j.dump(4);
     fout.close();
 
     return 0;

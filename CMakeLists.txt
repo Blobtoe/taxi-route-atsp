@@ -6,7 +6,7 @@ if(${CMAKE_VERSION} VERSION_LESS 2.8.2)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(tsp
+project(atsp_taxi
         DESCRIPTION "Asymmetric Travelling Salesman Problem"
         LANGUAGES CXX)     
 
@@ -32,10 +32,17 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/brute_force.cpp
     ${CMAKE_SOURCE_DIR}/src/branch_n_bound.cpp)
 
-find_package(CURL REQUIRED) 
-add_executable(tsp ${SOURCES} ${HEADERS})
-include_directories(${CURL_INCLUDE_DIR})
-target_link_libraries(tsp ${CURL_LIBRARIES})
+if (NOT WIN32)
+    find_package(CURL REQUIRED) 
+    include_directories(${CURL_INCLUDE_DIR})
+endif()
 
-set_target_properties(tsp PROPERTIES
+
+add_executable(atsp_taxi ${SOURCES} ${HEADERS})
+
+if (NOT WIN32)
+    target_link_libraries(atsp_taxi ${CURL_LIBRARY})
+endif()
+
+set_target_properties(atsp_taxi PROPERTIES
         CXX_STANDARD 17)
