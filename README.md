@@ -9,6 +9,7 @@ Download the proper executable for your platform from Releases tab.
 Use with the following command:
 ### Linux
 ```
+chmod +x atsp_taxi #give execution permissions
 atsp_taxi problem.json
 ```
 ### Windows
