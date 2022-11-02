@@ -20,7 +20,7 @@ jobs:
       run: cmake -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} "$Env:GITHUB_WORKSPACE"
     
     - name: Build
-      # Build your program with the given configuration
+      working-directory: ${{runner.workspace}}\build
       run: cmake --build . --config ${{env.BUILD_TYPE}}
       
     - name: Upload Build
