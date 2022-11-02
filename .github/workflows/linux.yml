@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: latest
-          path: ${{runner.workspace}}/build/tsp
+          path: ${{runner.workspace}}/build/atsp_taxi
           
 env:
   BUILD_TYPE: Release
