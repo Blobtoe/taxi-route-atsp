@@ -1,7 +1,10 @@
-
-
-on: [push]
 name: Linux Build
+
+# on: [push]
+
+env:
+  BUILD_TYPE: Release
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,5 +36,3 @@ jobs:
           name: atsp_taxi
           path: ${{runner.workspace}}/build/atsp_taxi
           
-env:
-  BUILD_TYPE: Release
