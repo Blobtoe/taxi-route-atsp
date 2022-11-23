@@ -1,6 +1,6 @@
 name: Linux Build
 
-# on: [push]
+on: [push]
 
 env:
   BUILD_TYPE: Release
